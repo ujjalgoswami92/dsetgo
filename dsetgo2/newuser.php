@@ -6,7 +6,7 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-         if($_POST["Logout"])
+         if($_POST["logout"])
                    {
                      header("Location: logout.php");
                   }
