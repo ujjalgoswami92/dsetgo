@@ -121,7 +121,7 @@ if($_SESSION["username"]=="")
 
 
 
-<form  action="login.php" method="POST"  >
+<form  action="newuser.php" method="POST"  >
 <table>
 <tr>
 <td>

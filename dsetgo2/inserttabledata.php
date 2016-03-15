@@ -10,9 +10,9 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$password2=md5("t");
-$sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password)
-VALUES ('test', 'test', 't','$password2')";
+$password2=md5("");
+$sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password,type)
+VALUES ('t', 't', 't','$password2','su')";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
