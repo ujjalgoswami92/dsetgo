@@ -2,7 +2,51 @@
 session_start();
 ?>
 <?php
-        if($_POST["logout"])
+$username= $_SESSION["username"];
+$servername = "localhost";
+$dbusername = "root";
+$dbpassword = "root";
+$dbname = "dsetgo";
+$type="";
+// Create connection
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT type FROM dsetgo_admin where username='$username'";
+//echo $password;
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+
+    while($row = $result->fetch_assoc()) {
+  //      echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+
+  $type=$row["type"];
+    }
+  }
+if($type=="su")
+{
+  $hideorshowdiv='';
+
+}
+else {
+  $hideorshowdiv='style="display:none;"';
+
+}
+        if($_POST["changepassword"])
+        {
+          header("location: changepassword.php");
+        }
+
+        else if($_POST["newadmin"])
+        {
+          header("location: newadmin.php");
+        }
+
+        else if($_POST["logout"])
           {
             header("Location: logout.php");
          }
@@ -22,6 +66,7 @@ session_start();
          {
            header("Location: addproducts.php");
          }
+
          ?>
 <form action="homepageadmin.php" method="POST">
   <table>
@@ -30,8 +75,12 @@ session_start();
   Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </td>
 <td>
+
   <div class="lable">
    <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="logout" value="Logout">
+     <div class="col_2_of_2 span_1_of_3" <?php echo $hideorshowdiv;?>>  <input type="Submit" name="newadmin" value="new admin"></br>
+       <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="changepassword" value="Change Password">
+
   </div>
 </td>
 </tr>
@@ -52,23 +101,23 @@ session_start();
       <h2>HOME PAGE</h2>
 		<form action="homepageadmin.php" method="post">
 		   <div class="lable">
-		    <div class="col_1_of_4 span_1_of_3">  <input type="Submit" name="NewUser" value="New User">
+		    <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="NewUser" value="New User">
 
 		   </div>
 
 		   <div class="lable-2">
-				 <div class="col_1_of_4 span_2_of_3">	  <input type="Submit" name="NewOrder" value="New Order">
+				 <div class="col_1_of_2 span_1_of_3">	  <input type="Submit" name="NewOrder" value="New Order">
 
 		   </div>
 
        <div class="lable-2">
-        <div class="col_1_of_4 span_3_of_3">
+        <div class="col_1_of_2 span_1_of_3">
 <input type="Submit" name="ViewCustomers" value="View Registered Customers">
 </div>
       </div>
     </br></br></br></br>
       <div class="lable-2">
-       <div class="col_1_of_4 span_4_of_3">
+       <div class="col_1_of_2 span_1_of_3">
 <input type="Submit" name="addproducts" value="ADD PROD">
 </div>
      </div>

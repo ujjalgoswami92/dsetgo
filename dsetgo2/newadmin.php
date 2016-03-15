@@ -12,7 +12,7 @@ if($_SESSION["username"]=="")
                   }
                   else if($_POST["MainMenu"])
                   {
-                    header("Location: homepageadmin.php");
+                    header("Location: login.php");
                   }
          ?>
 
@@ -149,43 +149,94 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
+
+<script>
+function validateForm()
+{
+  var afirstname= document.forms["userform"]["afirstname"].value;
+  var alastname=document.forms["userform"]["alastname"].value;
+  var ausername=document.forms["userform"]["ausername"].value;
+  var apassword=document.forms["userform"]["apassword"].value;
+  var aconfirmpassword=document.forms["userform"]["aconfirmpassword"].value;
+
+  if (afirstname==null|| afirstname=="")
+  {
+  alert("enter first name");
+  document.userform.afirstname.focus();
+  return false;
+  }
+  else if (alastname==null|| alastname=="")
+  {
+  alert("enter last name");
+  document.userform.alastname.focus();
+  return false;
+  }
+
+  else if (ausername==null|| ausername=="")
+  {
+  alert("enter username");
+  document.userform.ausername.focus();
+  return false;
+  }
+
+  else if (apassword==null|| apassword=="")
+  {
+  alert("enter password");
+  document.userform.apassword.focus();
+  return false;
+  }
+
+  else if (aconfirmpassword==null|| aconfirmpassword=="")
+  {
+  alert("enter confirm password");
+  document.userform.aconfirmpassword.focus();
+  return false;
+  }
+
+  if(apassword!=aconfirmpassword)
+  {
+    alert("passwords should match");
+    document.userform.apassword.focus();
+    return false;
+  }
+
+  else
+    {
+      return true;
+    }
+}
+
+
+
+
+</script>
+
+
 <div class="main">
 
-      <h2>USER LOGIN</h2>
-		<form name="userform"  action="newuser.php" method="post" onsubmit="return validateForm()" >
+      <h2>ADMIN LOGIN</h2>
+		<form name="userform"  action="newadmin.php" method="post" onsubmit="return validateForm()" >
 		   <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3"><input type="text" name="cfirstname" placeholder="FirstName"></div>
+		    <div class="col_1_of_1 span_1_of_3"><input type="text" name="afirstname" placeholder="FirstName"></div>
 		   </div>
 		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="clastname" placeholder="LastName">
+				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="alastname" placeholder="LastName">
 </div>
 		   </div>
        <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="caddress" placeholder="Customer Address">
+		    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="ausername" placeholder="Username">
 </div>
 		   </div>
 		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="cphonenumber" placeholder="Phone Number"></td>
+				 <div class="col_1_of_1 span_1_of_3">	<input type="password" name="apassword" placeholder="Password"></td>
 </div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="cemailid" placeholder="Email ID"></td>
+
+<div class="lable">
+  <div class="col_1_of_1 span_1_of_3">	<input type="password" name="aconfirmpassword" placeholder="Confirm Password"></td>
 </div>
+<input type="submit" name="Register" value="Register" >
 		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="creferralcode"  placeholder="Referral code"></td>
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="creferredby" placeholder="Referred By"></td>
-        </div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="cstatus" placeholder="Status" value="ACTIVE"></td>
-         </div>
-		   </div>
-		   <input type="submit" name="Register" value="Register" >
-		</form>
+       	</form>
 		</div>
 
 </body>
@@ -195,14 +246,11 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          if($_POST["Register"])
          {
 
-$cfirstname=$_POST["cfirstname"];
- $clastname=$_POST["clastname"];
- $caddress=$_POST["caddress"];
- $cphonenumber=$_POST["cphonenumber"];
- $cemailid=$_POST["cemailid"];
- $creferralcode=$_POST["creferralcode"];
- $creferredby=$_POST["creferredby"];
- $cstatus=$_POST["cstatus"];
+$afirstname=$_POST["afirstname"];
+ $alastname=$_POST["alastname"];
+ $ausername=$_POST["ausername"];
+ $apassword=md5($_POST["apassword"]);
+
 
 
 
@@ -214,12 +262,13 @@ $cfirstname=$_POST["cfirstname"];
            if ($conn->connect_error) {
                die("Connection failed: " . $conn->connect_error);
            }
-           $sql1 = "INSERT INTO dsetgo_customer (cfirstname, clastname,caddress,cphonenumber,cemailid,creferralcode,creferredby,cstatus)
-           VALUES ('$cfirstname', '$clastname', '$caddress','$cphonenumber','$cemailid','$creferralcode','$creferredby','$cstatus')";
-echo "Customer Added successfully!";
-           if ($conn->query($sql1) === TRUE) {
+           $sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password,type)
+           VALUES ('$afirstname', '$alastname', '$ausername','$apassword', 'nonsu')";
+           if ($conn->query($sql) === TRUE) {
+             echo "Admin Added successfully!";
+
            } else {
-               echo "Error: " . $sql1 . "<br>" . $conn->error;
+               echo "Error: " . $sql . "<br>" . $conn->error;
            }
 }
          ?>
