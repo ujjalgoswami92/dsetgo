@@ -6,13 +6,13 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-         if($_POST["Logout"])
+         if($_POST["logout"])
                    {
                      header("Location: logout.php");
                   }
                   else if($_POST["MainMenu"])
                   {
-                    header("Location: login.php");
+                    header("Location: homepageadmin.php");
                   }
          ?>
 
@@ -121,7 +121,7 @@ if($_SESSION["username"]=="")
 
 
 
-<form  action="login.php" method="POST"  >
+<form  action="newadmin.php" method="POST"  >
 <table>
 <tr>
 <td>

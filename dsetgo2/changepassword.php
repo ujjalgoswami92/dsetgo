@@ -6,7 +6,7 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-         if($_POST["Logout"])
+         if($_POST["logout"])
                    {
                      header("Location: logout.php");
                   }
@@ -75,7 +75,7 @@ echo "new passwords dont match!";
           }
         }
          ?>
-<form  action="login.php" method="POST"  >
+<form  action="changepassword.php" method="POST"  >
 <table>
 <tr>
 <td>
