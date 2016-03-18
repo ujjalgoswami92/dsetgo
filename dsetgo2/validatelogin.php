@@ -21,10 +21,12 @@ session_start();
 
      }
  } else {
+
 //     echo "Invalid Username or Password";
  //session_unset();
  //session_destroy();
  header("Location: login.php");
+
 
  }
  $conn->close();

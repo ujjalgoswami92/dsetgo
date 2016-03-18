@@ -139,7 +139,7 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <div class="main">
 
       <h2>NEW ORDER</h2>
-		<form action="neworder.php" method="post">
+		<form name="phonenumberform" action="neworder.php" method="post" onsubmit="return validatephonenumber()">
       <div class="lable">
         <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cphonenumber" placeholder="Phone Number" value=<?php echo $cphonenumber ?>></td>
      </div>
@@ -176,3 +176,39 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 </body>
 </html>
+
+
+<script>
+function validatephonenumber()
+{
+
+ var cphonenumber=document.phonenumberform.cphonenumber.value
+  if (cphonenumber==null ||cphonenumber=="")
+  {
+    alert("enter phone number")
+    return false
+  }
+else  if(cphonenumber!=null )
+  {
+    var phoneno = /^\d{10}$/;
+      if(cphonenumber.match(phoneno))
+            {
+           flag=1;
+
+            }
+          else
+            {
+            alert("phone number length should be ten and characters must be numbers ");
+            document.phonenumberform.cphonenumber.focus();
+            return false;
+            }
+
+
+  }
+  else {
+    {
+      return true
+    }
+  }
+}
+</script>

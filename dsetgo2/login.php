@@ -9,7 +9,7 @@
 <body>
 <div class="main">
       <h2>ADMIN LOGIN</h2>
-		<form action="validatelogin.php" method="post">
+		<form name="loginform" action="validatelogin.php" method="post" onsubmit="return validatelogin()" >
 		   <div class="lable">
 		    <div class="col_1_of_2 span_1_of_2">	<input type="text" class="text" placeholder="User Name" name="username"  ></div>
 		   </div>
@@ -21,3 +21,32 @@
 		</div>
 </body>
 </html>
+
+<script>
+function validatelogin()
+{
+
+  var username= document.forms["loginform"]["username"].value;
+  var password=document.forms["loginform"]["password"].value;
+
+
+  if (username==null|| username=="")
+{
+alert("enter username");
+document.loginform.username.focus();
+return false;
+}
+
+
+
+else if (password==null|| password=="")
+{
+alert("enter password");
+document.loginform.password.focus();
+return false;
+}
+else {
+  return true
+}
+}
+</script>

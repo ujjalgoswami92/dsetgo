@@ -29,7 +29,7 @@ if($_SESSION["username"]=="")
          var creferredby=document.forms["userform"]["creferredby"].value;
          var creferralcode=document.forms["userform"]["creferralcode"].value;
          var cstatus=document.forms["userform"]["cstatus"].value;
-
+         document.userform.creferralcode.value=cphonenumber;
          if (cfirstname==null|| cfirstname=="")
          {
          alert("enter first name");
