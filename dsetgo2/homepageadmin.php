@@ -4,8 +4,8 @@ session_start();
 <?php
 $username= $_SESSION["username"];
 $servername = "localhost";
-$dbusername = "root";
-$dbpassword = "root";
+$dbusername = "dsetgo321";
+$dbpassword = "dsetgo321";
 $dbname = "dsetgo";
 $type="";
 // Create connection

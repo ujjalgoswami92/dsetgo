@@ -204,11 +204,9 @@ $cfirstname=$_POST["cfirstname"];
  $creferredby=$_POST["creferredby"];
  $cstatus=$_POST["cstatus"];
 
-
-
            $servername = "localhost";
-           $dbusername = "root";
-           $dbpassword = "root";
+           $dbusername = "dsetgo321";
+           $dbpassword = "dsetgo321";
            $dbname = "dsetgo";
            $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
            if ($conn->connect_error) {
@@ -218,6 +216,11 @@ $cfirstname=$_POST["cfirstname"];
            VALUES ('$cfirstname', '$clastname', '$caddress','$cphonenumber','$cemailid','$creferralcode','$creferredby','$cstatus')";
 echo "Customer Added successfully!";
            if ($conn->query($sql1) === TRUE) {
+$msg = "Greetings ".$cfirstname."\n"."Thankyou for being a part of the captaindhobi.\nWe here at Captain Dhobi are at determined to provide full customer satisfaction with your dhobi experience.\nWe will keep in touch.\n-Team CaptainDhobi";
+$msg = wordwrap($msg,70);
+
+mail($cemailid,"Welcome to Captain Dhobi",$msg);
+
            } else {
                echo "Error: " . $sql1 . "<br>" . $conn->error;
            }

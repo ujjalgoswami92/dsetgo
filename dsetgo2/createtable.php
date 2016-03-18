@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection
@@ -39,8 +39,8 @@ $conn->close();
 
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection
@@ -77,8 +77,8 @@ $conn->close();
 
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection
@@ -107,8 +107,8 @@ $conn->close();
 
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection
@@ -141,8 +141,8 @@ $conn->close();
 
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection
@@ -173,8 +173,8 @@ $conn->close();
 
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 $conn = new mysqli($servername, $username, $password, $dbname);

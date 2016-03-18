@@ -33,8 +33,8 @@ if($_SESSION["username"]=="")
            if($anewpassword==$aconfirmnewpassword)
            {
              $servername = "localhost";
-             $dbusername = "root";
-             $dbpassword = "root";
+             $dbusername = "dsetgo321";
+             $dbpassword = "dsetgo321";
              $dbname = "dsetgo";
              $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
              if ($conn->connect_error) {

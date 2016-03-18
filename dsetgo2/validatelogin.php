@@ -7,14 +7,15 @@ session_start();
  $username= $_POST["username"];
  $password=md5($_POST["password"]);
  $servername = "localhost";
- $dbusername = "root";
- $dbpassword = "root";
+ $dbusername = "dsetgo321";
+ $dbpassword = "dsetgo321";
  $dbname = "dsetgo";
 
  // Create connection
  $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
  // Check connection
  if ($conn->connect_error) {
+ echo "abc";
      die("Connection failed: " . $conn->connect_error);
  }
  $sql = "SELECT * FROM dsetgo_admin where username='$username' AND password='$password'";

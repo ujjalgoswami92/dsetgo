@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "dsetgo321";
+$password = "dsetgo321";
 $dbname = "dsetgo";
 
 // Create connection

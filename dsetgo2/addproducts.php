@@ -90,8 +90,8 @@ $itemname=$_POST["itemname"];
 echo $itemcategory;
 
            $servername = "localhost";
-           $dbusername = "root";
-           $dbpassword = "root";
+           $dbusername = "dsetgo321";
+           $dbpassword = "dsetgo321";
            $dbname = "dsetgo";
            $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
            if ($conn->connect_error) {
