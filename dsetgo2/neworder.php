@@ -1,4 +1,6 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -21,14 +23,6 @@ if($_SESSION["username"]=="")
          ?>
          <?php
 
-           $servername = "localhost";
-           $dbusername = "dsetgo321";
-           $dbpassword = "dsetgo321";
-           $dbname = "dsetgo";
-           $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-           if ($conn->connect_error) {
-               die("Connection failed: " . $conn->connect_error);
-           }
 
            $sql2 = "SELECT * FROM dsetgo_products";
            $result = $conn->query($sql2);
@@ -49,7 +43,6 @@ if($_SESSION["username"]=="")
            $dynamicList=$dynamicList1.$dynamicList."</select>";
 
           //echo $dynamicList;
-           $conn->close();
          ?>
          <?php
 
@@ -57,14 +50,6 @@ if($_POST["searchcustomer"])
           {
             $PhoneNumber=$_POST["cphonenumber"];
 
-            $servername = "localhost";
-            $dbusername = "dsetgo321";
-            $dbpassword = "dsetgo321";
-            $dbname = "dsetgo";
-            $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
 
             $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
             $result = $conn->query($sql2);
@@ -107,6 +92,7 @@ $customerfound="true";
            $showorhideregister='';
 
          }
+          $conn->close();
           ?>
 
          <head>

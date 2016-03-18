@@ -1,4 +1,6 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -254,14 +256,6 @@ $afirstname=$_POST["afirstname"];
 
 
 
-           $servername = "localhost";
-           $dbusername = "dsetgo321";
-           $dbpassword = "dsetgo321";
-           $dbname = "dsetgo";
-           $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-           if ($conn->connect_error) {
-               die("Connection failed: " . $conn->connect_error);
-           }
            $sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password,type)
            VALUES ('$afirstname', '$alastname', '$ausername','$apassword', 'nonsu')";
            if ($conn->query($sql) === TRUE) {
@@ -271,4 +265,5 @@ $afirstname=$_POST["afirstname"];
                echo "Error: " . $sql . "<br>" . $conn->error;
            }
 }
+ $conn->close();
          ?>

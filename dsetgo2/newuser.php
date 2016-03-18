@@ -1,4 +1,6 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -204,14 +206,6 @@ $cfirstname=$_POST["cfirstname"];
  $creferredby=$_POST["creferredby"];
  $cstatus=$_POST["cstatus"];
 
-           $servername = "localhost";
-           $dbusername = "dsetgo321";
-           $dbpassword = "dsetgo321";
-           $dbname = "dsetgo";
-           $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-           if ($conn->connect_error) {
-               die("Connection failed: " . $conn->connect_error);
-           }
            $sql1 = "INSERT INTO dsetgo_customer (cfirstname, clastname,caddress,cphonenumber,cemailid,creferralcode,creferredby,cstatus)
            VALUES ('$cfirstname', '$clastname', '$caddress','$cphonenumber','$cemailid','$creferralcode','$creferredby','$cstatus')";
 echo "Customer Added successfully!";
@@ -225,4 +219,5 @@ mail($cemailid,"Welcome to Captain Dhobi",$msg);
                echo "Error: " . $sql1 . "<br>" . $conn->error;
            }
 }
+ $conn->close();
          ?>

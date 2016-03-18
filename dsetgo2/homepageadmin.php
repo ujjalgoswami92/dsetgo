@@ -1,19 +1,13 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
+
 session_start();
 ?>
 <?php
 $username= $_SESSION["username"];
-$servername = "localhost";
-$dbusername = "dsetgo321";
-$dbpassword = "dsetgo321";
-$dbname = "dsetgo";
 $type="";
 // Create connection
-$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 $sql = "SELECT type FROM dsetgo_admin where username='$username'";
 //echo $password;
 $result = $conn->query($sql);
@@ -66,7 +60,7 @@ else {
          {
            header("Location: addproducts.php");
          }
-
+ $conn->close();
          ?>
 <form action="homepageadmin.php" method="POST">
   <table>

@@ -1,4 +1,7 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
+
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -20,15 +23,6 @@ if($_SESSION["username"]=="")
           $customerid=$_GET["id"];
 
 
-                    $servername = "localhost";
-                    $dbusername = "dsetgo321";
-                    $dbpassword = "dsetgo321";
-
-                    $dbname = "dsetgo";
-                    $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
 
                     $sql2 = "SELECT * FROM dsetgo_customer where cid=$customerid";
                     $result = $conn->query($sql2);

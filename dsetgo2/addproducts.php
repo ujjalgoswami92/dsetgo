@@ -1,4 +1,7 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
+
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -89,14 +92,6 @@ $itemname=$_POST["itemname"];
 
 echo $itemcategory;
 
-           $servername = "localhost";
-           $dbusername = "dsetgo321";
-           $dbpassword = "dsetgo321";
-           $dbname = "dsetgo";
-           $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-           if ($conn->connect_error) {
-               die("Connection failed: " . $conn->connect_error);
-           }
            $sql1 = "INSERT INTO dsetgo_products (itemname, itemcost,itemcategory)
            VALUES ('$itemname', '$itemcost','$itemcategory')";
            if ($conn->query($sql1) === TRUE) {
@@ -104,5 +99,7 @@ echo $itemcategory;
            } else {
                echo "Error: " . $sql1 . "<br>" . $conn->error;
            }
+
 }
+$conn->close();
          ?>

@@ -1,5 +1,6 @@
 <?php
-
+require 'connect.inc.php';
+require 'core.inc.php';
 
 if(isset($_GET['phonenumber']) && intval($_GET['phonenumber'])) {
 
@@ -8,14 +9,6 @@ if(isset($_GET['phonenumber']) && intval($_GET['phonenumber'])) {
 	$PhoneNumber = intval($_GET['phonenumber']); //no default
 
 
-  $servername = "localhost";
-  $dbusername = "dsetgo321";
-  $dbpassword = "dsetgo321";
-  $dbname = "dsetgo";
-  $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-  if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-  }
 
   $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
   $result = $conn->query($sql2);

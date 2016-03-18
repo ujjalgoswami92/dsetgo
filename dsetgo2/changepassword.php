@@ -1,4 +1,6 @@
 <?php
+require 'connect.inc.php';
+require 'core.inc.php';
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -32,14 +34,6 @@ if($_SESSION["username"]=="")
 
            if($anewpassword==$aconfirmnewpassword)
            {
-             $servername = "localhost";
-             $dbusername = "dsetgo321";
-             $dbpassword = "dsetgo321";
-             $dbname = "dsetgo";
-             $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-             if ($conn->connect_error) {
-                 die("Connection failed: " . $conn->connect_error);
-             }
              $sql1 = "select password from dsetgo_admin where username='$ausername'";
              $sql2 = "update dsetgo_admin set password='$aconfirmnewpassword' where username='$ausername' ";
              $result = $conn->query($sql1);
@@ -74,6 +68,7 @@ echo "new passwords dont match!";
             }
           }
         }
+        $conn->close();
          ?>
 <form  action="changepassword.php" method="POST"  >
 <table>

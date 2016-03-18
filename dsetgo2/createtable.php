@@ -1,16 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+require 'connect.inc.php';
 // sql to create table
 $sql = "CREATE TABLE dsetgo_customer (
 cid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -31,24 +20,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-$conn->close();
-?>
-
-
-
-
-<?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // sql to create table
 $sql = "CREATE TABLE dsetgo_orders (
@@ -71,23 +42,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-$conn->close();
-?>
-
-
-<?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 // sql to create table
 $sql = "CREATE TABLE dsetgo_products (
 itemid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -100,22 +54,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Table products created successfully";
 } else {
     echo "Error creating table: " . $conn->error;
-}
-
-$conn->close();
-?>
-
-<?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 // sql to create table
@@ -135,22 +73,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-$conn->close();
-?>
-
-
-<?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // sql to create table
 $sql = "CREATE TABLE dsetgo_superuser (
@@ -168,21 +90,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-$conn->close();
-?>
-
-<?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $sql = "CREATE TABLE dsetgo_wallet (
   itemid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   cid INT(6) NOT NULL,
@@ -197,5 +104,5 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating table: " . $conn->error;
 }
 
-
+$conn->close();
 ?>

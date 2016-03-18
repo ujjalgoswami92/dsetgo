@@ -1,15 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "dsetgo321";
-$password = "dsetgo321";
-$dbname = "dsetgo";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'connect.inc.php';
+require 'core.inc.php';
 
 $sql = "SELECT id, firstname, lastname FROM dsetgo_admin";
 $result = $conn->query($sql);
