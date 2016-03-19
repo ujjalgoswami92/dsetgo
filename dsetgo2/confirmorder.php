@@ -54,6 +54,7 @@ $i=1;
    $creferralcode=$row["creferralcode"];
    $creferredby=$row["creferredby"];
    $cstatus=$row["cstatus"];
+   $cid=$row["cid"];
                    }
                } else {
                  $customerfound="true";
@@ -79,9 +80,9 @@ $cemailid=$row["cemailid"];
 $creferralcode=$row["creferralcode"];
 $creferredby=$row["creferredby"];
 $cstatus=$row["cstatus"];
+$cid=$row["cid"];
 }
 }
-
         //  $j=1;$k=2;
           $max=$_POST["total"];
           //echo $max;
@@ -92,13 +93,25 @@ if($_POST["qty".$i]!="")
 {
   $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Qty</p></strong></td></tr>';
   $sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
+  $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
   $dr.='<tr><td>'.$_POST["itemname".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["itemcost".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["qty".$i].'</td></tr>';
 }
-
           }
           $dr1='<table>'.$dr0.$dr.'</table>'.'</br></br><p><strong>Total Amount: Rs'.$sum.'</p></strong></br></br>';
+          $products=rtrim($products, ",");
 
-          $msg = "Greetings ".$cfirstname."\n".",</br>It was a pleasure serving you. Please find the receipt of your order as follows:\n\n\n"."<html><body>".$dr1."</body></html>"."\nWe hope to serve you again soon."."\n</br>-Team CaptainDhobi";
+          $sql1 = "INSERT INTO dsetgo_orders (cid,oamount,products)
+          VALUES ('$cid', '$sum','$products')";
+          echo "Order Added successfully!";
+          if ($conn->query($sql1) === TRUE) {
+
+          } else {
+              echo "Error: " . $sql1 . "<br>" . $conn->error;
+          }
+
+
+
+          $msg = "It was a pleasure serving you. Please find the receipt of your order as follows:\n\n\n"."<html><body>".$dr1."</body></html>"."\nWe hope to serve you again soon."."\n</br>-Team CaptainDhobi";
           $msg = wordwrap($msg,70);
 $to = $cemailid;
 $subject = 'CaptainDhobi-Order Receipt!';
@@ -115,6 +128,7 @@ $headers .= 'From: '.$from."\r\n".
 
 // Compose a simple HTML email message
 $message = '<html><body>';
+$message .='Greetings '.$cfirstname.',</br>';
 $message .= $msg;
 $message .= '</body></html>';
 
