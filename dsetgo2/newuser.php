@@ -210,11 +210,34 @@ $cfirstname=$_POST["cfirstname"];
            VALUES ('$cfirstname', '$clastname', '$caddress','$cphonenumber','$cemailid','$creferralcode','$creferredby','$cstatus')";
 echo "Customer Added successfully!";
            if ($conn->query($sql1) === TRUE) {
-$msg = "Greetings ".$cfirstname."\n"."Thankyou for being a part of the captaindhobi.\nWe here at Captain Dhobi are at determined to provide full customer satisfaction with your dhobi experience.\nWe will keep in touch.\n-Team CaptainDhobi";
-$msg = wordwrap($msg,70);
 
-mail($cemailid,"Welcome to Captain Dhobi",$msg);
+             $msg = "Thankyou for being a part of the captaindhobi.We here at Captain Dhobi are at determined to provide full customer satisfaction with your dhobi experience.\nWe will keep in touch.\n-Team CaptainDhobi";
+             $msg = wordwrap($msg,70);
+         $to = $cemailid;
+         $subject = 'CaptainDhobi- Registration Successful!';
+         $from = 'support@captaindhobi.com';
 
+         // To send HTML mail, the Content-type header must be set
+         $headers  = 'MIME-Version: 1.0' . "\r\n";
+         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+         // Create email headers
+         $headers .= 'From: '.$from."\r\n".
+         'Reply-To: '.$from."\r\n" .
+         'X-Mailer: PHP/' . phpversion();
+
+         // Compose a simple HTML email message
+         $message = '<html><body>';
+         $message .='Greetings '.$cfirstname.',</br>';
+         $message .= $msg;
+         $message .= '</body></html>';
+
+         // Sending email
+         if(mail($to, $subject, $message, $headers)){
+         echo 'Your mail has been sent successfully.';
+         } else{
+         echo 'Unable to send email. Please try again.';
+         }
            } else {
                echo "Error: " . $sql1 . "<br>" . $conn->error;
            }
