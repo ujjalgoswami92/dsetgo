@@ -27,12 +27,17 @@ if($_SESSION["username"]=="")
            $sql2 = "SELECT * FROM dsetgo_products";
            $result = $conn->query($sql2);
 
-           $dynamicList1='<select name="products" id="products" class="products">';
+          // $dynamicList1='<select name="products" id="products" class="products">';
+          $dynamicList1='<fieldset><legend>Available Items:';
+$i=1;
            if ($result->num_rows > 0) {
                while($row = $result->fetch_assoc()) {
     //           echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
 
-  $dynamicList .='<option value="'.$row["itemname"].'">'.$row["itemname"].'</option>';
+
+    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /> <input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
+    $i=$i+1;
+  //$dynamicList .='<option value="'.$row["itemname"].'">'.$row["itemname"].'</option>';
   //<tr><td><a href="bookprofile.php?id='.$row["cid"].'"  title="An image"></td></tr>';
   //"<tr><td >". $row["cid"]."</td><td >". $row["cfirstname"]."</td><td >". $row["clastname"]."</td><td >". $row["cphonenumber"]."</td><td >". $row["cemailid"]."</td><td >". $row["cstatus"]."</td></tr>";
 //<a href="bookprofile.php?id='.$row["cid"].'"  title="An image">
@@ -40,7 +45,8 @@ if($_SESSION["username"]=="")
            } else {
                echo "Invalid data";
            }
-           $dynamicList=$dynamicList1.$dynamicList."</select>";
+           $dynamicList=$dynamicList1.$dynamicList.'<input type="text" readonly name="total" value="total to be displayed here" />
+           </br><input type="submit" name="totalproducts" value="Total" />'.'</fieldset></br>';
 
           //echo $dynamicList;
          ?>
@@ -73,9 +79,14 @@ $cstatus=$row["cstatus"];
             }
 
          }
+         else if($_POST["totalproducts"])
+         {
+           $PhoneNumber=$_POST["cphonenumber"];
+
+echo "ads";
+         }
         else if($_POST["createorder"])
         {
-echo "asd";
 $customerfound="true";
         }
         else if($_POST["additem"])
@@ -162,6 +173,7 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cemailid" placeholder="Email ID"  readonly value=<?php echo $cemailid ?>></td>
 </div>
 		   </div>
+       <?php echo $dynamicList;?>
        <input type="Submit" name="additem" value="Add Item">
        <input type="Submit" name="createorder" value="Create Order">
        <input type="Submit" name="sendreceipt" value="Send  Receipt">
