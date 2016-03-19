@@ -17,6 +17,10 @@ if($_SESSION["username"]=="")
                   {
                     header("Location: homepageadmin.php");
                   }
+                  else if($_POST["ViewOrders"])
+                  {
+                    header('Location: viewcustomerorders.php?id='.$_POST["cidtext"].'');
+                  }
 
          ?>
          <?php
@@ -107,6 +111,13 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				 <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="cstatus" placeholder="Status" value="ACTIVE" value=<?php echo $cstatus ?>></td>
          </div>
 		   </div>
+       <td>
+       <div class="lable">
+        <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="ViewOrders" value="View Orders">
+       </div>
+       </td>
+
+       <input type="text" readonly name="cidtext" style="display:none;" value="<?php echo $_GET["id"]; ?>" >
 		</form>
 		</div>
 
