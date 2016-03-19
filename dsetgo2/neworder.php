@@ -1,6 +1,5 @@
 <?php
 require 'connect.inc.php';
-require 'core.inc.php';
 session_start();
 if($_SESSION["username"]=="")
 {
@@ -20,88 +19,45 @@ if($_SESSION["username"]=="")
                   {
                      header("Location: newuser.php");
                   }
+                  else if ($_POST["searchcustomer"])
+                  {
+                    $PhoneNumber=$_POST["cphonenumber"];
+                    $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
+                    $result = $conn->query($sql2);
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                      header('Location: confirmorder.php?no='.$PhoneNumber.'');
+                        }
+                    }
+                  }
          ?>
          <?php
-
-
-           $sql2 = "SELECT * FROM dsetgo_products";
-           $result = $conn->query($sql2);
-
-          // $dynamicList1='<select name="products" id="products" class="products">';
-          $dynamicList1='<fieldset><legend>Available Items:';
-$i=1;
-           if ($result->num_rows > 0) {
-               while($row = $result->fetch_assoc()) {
-    //           echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-
-
-    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /> <input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
-    $i=$i+1;
-  //$dynamicList .='<option value="'.$row["itemname"].'">'.$row["itemname"].'</option>';
-  //<tr><td><a href="bookprofile.php?id='.$row["cid"].'"  title="An image"></td></tr>';
-  //"<tr><td >". $row["cid"]."</td><td >". $row["cfirstname"]."</td><td >". $row["clastname"]."</td><td >". $row["cphonenumber"]."</td><td >". $row["cemailid"]."</td><td >". $row["cstatus"]."</td></tr>";
-//<a href="bookprofile.php?id='.$row["cid"].'"  title="An image">
-               }
-           } else {
-               echo "Invalid data";
-           }
-           $dynamicList=$dynamicList1.$dynamicList.'<input type="text" readonly name="total" value="total to be displayed here" />
-           </br><input type="submit" name="totalproducts" value="Total" />'.'</fieldset></br>';
-
-          //echo $dynamicList;
-         ?>
-         <?php
-
+$customerfound="true";
 if($_POST["searchcustomer"])
           {
             $PhoneNumber=$_POST["cphonenumber"];
-
-
             $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
             $result = $conn->query($sql2);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
             //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-               $customerfound="true";
-$cphonenumber=$PhoneNumber;
-$cfirstname=$row["cfirstname"];
-$clastname=$row["clastname"];
-$caddress=$row["caddress"];
-$cemailid=$row["cemailid"];
-$creferralcode=$row["creferralcode"];
-$creferredby=$row["creferredby"];
-$cstatus=$row["cstatus"];
+              header("Location: confirmorder.php");
                 }
             } else {
-              $customerfound="false";
+              $customerfound="true";
 
                 echo "Customer not found!!";
             }
 
          }
-         else if($_POST["totalproducts"])
-         {
-           $PhoneNumber=$_POST["cphonenumber"];
-
-echo "ads";
-         }
-        else if($_POST["createorder"])
-        {
-$customerfound="true";
-        }
-        else if($_POST["additem"])
-        {
-
-        }
          if($customerfound=="true")
          {
            $showorhidediv='';
-           $showorhideregister='style="display:none;"';
+    //       $showorhideregister='style="display:none;"';
          }
          else {
            $showorhidediv='style="display:none;"';
            $showorhideregister='';
-
          }
           $conn->close();
           ?>
@@ -135,6 +91,12 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="MainMenu" value="MainMenu">
 </div>
 </td>
+<td>
+  <div <?php echo $showorhideregister;?>>
+    <input type="Submit" name="registercustomer" value="Register Customer">
+  </div>
+
+</td>
 </tr>
 </table>
 </form>
@@ -149,7 +111,7 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <body>
 <div class="main">
 
-      <h2>NEW ORDER</h2>
+      <h2>SEARCH CUSTOMER</h2>
 		<form name="phonenumberform" action="neworder.php" method="post" onsubmit="return validatephonenumber()">
       <div class="lable">
         <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cphonenumber" placeholder="Phone Number" value=<?php echo $cphonenumber ?>></td>
@@ -157,70 +119,10 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
       <input type="Submit" name="searchcustomer" value="Search Customer">
 
-<div <?php echo $showorhidediv;?>>
-		   <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3"><input type="text"  name="cfirstname" placeholder="FirstName" readonly value=<?php echo $cfirstname ?>></div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="clastname" placeholder="LastName" readonly  value=<?php echo $clastname ?>>
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="caddress" placeholder="Customer Address" readonly  value=<?php echo $caddress ?>>
-</div>
-		   </div>
-		   <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cemailid" placeholder="Email ID"  readonly value=<?php echo $cemailid ?>></td>
-</div>
-		   </div>
-       <?php echo $dynamicList;?>
-       <input type="Submit" name="additem" value="Add Item">
-       <input type="Submit" name="createorder" value="Create Order">
-       <input type="Submit" name="sendreceipt" value="Send  Receipt">
 
-  	</div>
-    <div <?php echo $showorhideregister;?>>
-      <input type="Submit" name="registercustomer" value="Register Customer">
-    </div>
 
   </form>
 
 </div>
 </body>
 </html>
-
-
-<script>
-function validatephonenumber()
-{
-
- var cphonenumber=document.phonenumberform.cphonenumber.value
-  if (cphonenumber==null ||cphonenumber=="")
-  {
-    alert("enter phone number")
-    return false
-  }
-else  if(cphonenumber!=null )
-  {
-    var phoneno = /^\d{10}$/;
-      if(cphonenumber.match(phoneno))
-            {
-           flag=1;
-
-            }
-          else
-            {
-            alert("phone number length should be ten and characters must be numbers ");
-            document.phonenumberform.cphonenumber.focus();
-            return false;
-            }
-
-
-  }
-  else {
-    {
-      return true
-    }
-  }
-}
-</script>

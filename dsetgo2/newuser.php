@@ -153,7 +153,7 @@ Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <body>
 <div class="main">
 
-      <h2>USER LOGIN</h2>
+      <h2>USER REGISTRATION</h2>
 		<form name="userform"  action="newuser.php" method="post" onsubmit="return validateForm()" >
 		   <div class="lable">
 		    <div class="col_1_of_1 span_1_of_3"><input type="text" name="cfirstname" placeholder="FirstName"></div>

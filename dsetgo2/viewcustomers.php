@@ -19,7 +19,7 @@ if($_SESSION["username"]=="")
          ?>
          <?php
 
-      
+
            $sql2 = "SELECT * FROM dsetgo_customer";
            $result = $conn->query($sql2);
            $dynamicList1="<table ><tr ><td>CusID</td><td>FirstName</td><td>LastName</td><td>PhoneNumber</td><td>Email ID</td><td>Status</td></tr>";
