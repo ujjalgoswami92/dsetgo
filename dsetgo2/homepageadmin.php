@@ -56,6 +56,10 @@ else {
          {
            header("Location: viewcustomers.php");
          }
+         else if($_POST["ViewProducts"])
+         {
+           header("Location: viewproducts.php");
+         }
          else if($_POST["addproducts"])
          {
            header("Location: addproducts.php");
@@ -103,16 +107,16 @@ else {
 				 <div class="col_1_of_2 span_1_of_3">	  <input type="Submit" name="NewOrder" value="New Order">
 
 		   </div>
-
+       <div class="lable-2">
+       <div class="col_1_of_2 span_1_of_3">	  <input type="Submit" name="ViewProducts" value="View Products">
+       </div>
        <div class="lable-2">
         <div class="col_1_of_2 span_1_of_3">
 <input type="Submit" name="ViewCustomers" value="View Registered Customers">
 </div>
-      </div>
-    </br></br></br></br>
       <div class="lable-2">
        <div class="col_1_of_2 span_1_of_3">
-<input type="Submit" name="addproducts" value="ADD PROD">
+<input type="Submit" name="addproducts" value="Add Products">
 </div>
      </div>
       </form>

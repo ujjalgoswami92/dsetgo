@@ -130,7 +130,7 @@ else return true;
          if($_POST["addproduct"])
          {
 
-$itemname=$_POST["itemname"];
+ $itemname=$_POST["itemname"];
  $itemcategory=$_POST['category'];
  $itemcost=$_POST["itemcost"];
 

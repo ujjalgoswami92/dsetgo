@@ -29,40 +29,13 @@ if($_SESSION["username"]=="")
                       header('Location: confirmorder.php?no='.$PhoneNumber.'');
                         }
                     }
+                    else {
+                      echo "Customer not found";
+                    }
                   }
-         ?>
-         <?php
-$customerfound="true";
-if($_POST["searchcustomer"])
-          {
-            $PhoneNumber=$_POST["cphonenumber"];
-            $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
-            $result = $conn->query($sql2);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-            //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-              header("Location: confirmorder.php");
-                }
-            } else {
-              $customerfound="true";
 
-                echo "Customer not found!!";
-            }
-
-         }
-         if($customerfound=="true")
-         {
-           $showorhidediv='';
-    //       $showorhideregister='style="display:none;"';
-         }
-         else {
-           $showorhidediv='style="display:none;"';
-           $showorhideregister='';
-         }
-          $conn->close();
-          ?>
-
-         <head>
+?>
+ <head>
 <style>
            #products option {
     width: 50px;

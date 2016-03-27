@@ -27,7 +27,8 @@ if($_SESSION["username"]=="")
 $i=1;
            if ($result->num_rows > 0) {
                while($row = $result->fetch_assoc()) {
-    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /> <input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
+              $itemcategory= $row["itemcategory"];
+    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /><input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
     $i=$i+1;
            }
            } else {
@@ -40,13 +41,13 @@ $i=1;
          $max=$_POST["total"];
          $PhoneNumber=$_GET["no"];
          $cphonenumber=$PhoneNumber;
-               $customerfound="true";
+              $customerfound="true";
                $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
                $result = $conn->query($sql2);
                if ($result->num_rows > 0) {
                    while($row = $result->fetch_assoc()) {
                //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-                  $customerfound="true";
+                  //$customerfound="true";
    $cfirstname=$row["cfirstname"];
    $clastname=$row["clastname"];
    $caddress=$row["caddress"];
@@ -57,7 +58,7 @@ $i=1;
    $cid=$row["cid"];
                    }
                } else {
-                 $customerfound="true";
+                 //$customerfound="true";
 
                    echo "Customer not found!!";
                }
@@ -66,48 +67,88 @@ $i=1;
        if($_POST["additem"])
         {
 
-          $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
-          $result2 = $conn->query($sql2);
-          if ($result2->num_rows2 > 0) {
-              while($row2 = $result2->fetch_assoc()) {
-          //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-             $customerfound="true";
-$cphonenumber=$PhoneNumber;
-$cfirstname=$row["cfirstname"];
-$clastname=$row["clastname"];
-$caddress=$row["caddress"];
-$cemailid=$row["cemailid"];
-$creferralcode=$row["creferralcode"];
-$creferredby=$row["creferredby"];
-$cstatus=$row["cstatus"];
-$cid=$row["cid"];
-}
-}
+
         //  $j=1;$k=2;
           $max=$_POST["total"];
-          //echo $max;
+         //echo "max-->".$max;
           $sum=0;
+          $flag=0;
+          for($i=1;$i<=$max;$i++)
+          {
+
+            if($_POST["qty".$i]!="")
+            {
+              $flag=1;
+             $sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
+
+          }
+        }
+       //echo $sum;
+       // flag used for only creating order id when there is some item selected
+        if($flag==1)
+        {
+              $orderid =  $cid.mt_rand();
+              //echo $orderid;
+          $sql = "INSERT INTO dsetgo_orders (orderid,oamount,cid,orderstatus)
+          VALUES ('$orderid','$sum', '$cid','pending')";
+          if ($conn->query($sql) === TRUE) {
+              echo "order table updated successful";
+          } else {
+              echo "Error inserting data in order table: " . $conn->error;
+          }
+}
+else {
+  echo "nothing selected for order";
+}
+
+
           for($i=1;$i<=$max;$i++)
           {
 if($_POST["qty".$i]!="")
 {
-  $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Qty</p></strong></td></tr>';
-  $sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
-  $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
+   $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Category</p></strong></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;  </td><td><p><strong>Item Qty</p></strong></td> ';
+   //$sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
+   $itemname=$_POST["itemname".$i];
+   $itemcost=$_POST["itemcost".$i];
+   $itemcategory=$_POST["itemcategory".$i];
+   $itemqty=$_POST["qty".$i];
+   //echo $itemname.'    '.$itemcategory.'      '.$itemcost;
+   $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
   $dr.='<tr><td>'.$_POST["itemname".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["itemcost".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["qty".$i].'</td></tr>';
-}
-          }
+
+
           $dr1='<table>'.$dr0.$dr.'</table>'.'</br></br><p><strong>Total Amount: Rs'.$sum.'</p></strong></br></br>';
-          $products=rtrim($products, ",");
 
-          $sql1 = "INSERT INTO dsetgo_orders (cid,oamount,products)
-          VALUES ('$cid', '$sum','$products')";
-          echo "Order Added successfully!";
-          if ($conn->query($sql1) === TRUE) {
 
+
+
+           $sql1="SELECT itemid, itemcost FROM dsetgo_products where itemname='$itemname' and itemcost=$itemcost";
+//            //$sql2="SELECT max(orderid) m from dsetgo_orders";
+           $result1=$conn->query($sql1);
+//            //$result2=$conn->query($sql2);
+           if ($result1->num_rows > 0 ) {
+            $row1 = $result1->fetch_assoc();
+
+
+           $sql3 = "INSERT INTO dsetgo_products_orders (itemid,orderid,quantity,orderprice)
+           VALUES ('$row1[itemid]','$orderid','$itemqty','$row1[itemcost]')";
+           if ($conn->query($sql3)==TRUE ) {
+            echo "table products_orders updates successfully";
           } else {
-              echo "Error: " . $sql1 . "<br>" . $conn->error;
+            echo "Error updating products_orders table: " . $conn->error;
           }
+
+         } else
+           {
+                 echo "result2-->Invalid data";
+           }
+         } else {
+             echo "result1-->Invalid data";
+           }
+
+}
+
+
 
 
 
@@ -139,7 +180,7 @@ if(mail($to, $subject, $message, $headers)){
     echo 'Unable to send email. Please try again.';
 }
 
-        }
+}
          if($customerfound=="true")
          {
            $showorhidediv='';

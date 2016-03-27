@@ -238,7 +238,8 @@ echo "Customer Added successfully!";
          } else{
          echo 'Unable to send email. Please try again.';
          }
-           } else {
+           }
+            else {
                echo "Error: " . $sql1 . "<br>" . $conn->error;
            }
 }
