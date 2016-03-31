@@ -2,13 +2,6 @@
 require 'connect.inc.php';
 require 'core.inc.php';
 $content2='<input type="Submit" name="MainMenu" value="MainMenu">';
-$content='<h2>All Customers</h2>
-<div  style="width:800px;margin-left:-60px;" >
-  <div class="table4">
-    <?php echo $dynamicList ?>
-    </div>
-</div>';
-require 'header.php';
 
 ?>
 <?php
@@ -29,15 +22,23 @@ require 'header.php';
            }
            $dynamicList=$dynamicList1.$dynamicList."</table>";
 
-          //echo $dynamicList;
            $conn->close();
 
 
          ?>
+<?php
+$content='<h2>All Customers</h2>
+<div  style="width:800px;margin-left:-60px;" >
+  <div class="table4">
+    '.$dynamicList.'
+    </div>
+</div>';
+require 'header.php';
 
+?>
          <html>
          <head>
-         
+
          <meta charset="utf-8">
          <link href="css/style.css" rel='stylesheet' type='text/css' />
          <meta name="viewport" content="width=device-width, initial-scale=1">

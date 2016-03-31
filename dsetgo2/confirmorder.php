@@ -106,7 +106,7 @@ else {
           {
 if($_POST["qty".$i]!="")
 {
-   $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Category</p></strong></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;  </td><td><p><strong>Item Qty</p></strong></td> ';
+   $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Qty</p></strong></td> ';
    //$sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
    $itemname=$_POST["itemname".$i];
    $itemcost=$_POST["itemcost".$i];
