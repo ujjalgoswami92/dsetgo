@@ -10,13 +10,33 @@
 <div class="main">
       <h2>ADMIN LOGIN</h2>
 		<form name="loginform" action="validatelogin.php" method="post" onsubmit="return validatelogin()" >
-		   <div class="lable">
-		    <div class="col_1_of_2 span_1_of_2">	<input type="text" class="text" placeholder="User Name" name="username"  ></div>
-		   </div>
-		   <div class="lable-2">
-				 <div class="col_1_of_2 span_1_of_2">	<input type="password" class="text" name="password" placeholder="Password" ></div>
-		   </div>
-		   <input type="submit" value="Login" >
+<div align='center'>
+      <table>
+    <tr>
+    <td>
+      <div class='lable'>
+       <div class='col_1_of_2 span_1_of_3'>
+      	<input type="text" class="text" placeholder="User Name" name="username"  >
+</div></div>
+
+       </td>
+     </tr>
+     <tr>
+
+    <td>
+      <div class='lable'>
+       <div class='col_2_of_2 span_1_of_3'>
+      	<input type="password" class="text" name="password" placeholder="Password" >
+</div></div>
+       </td>
+     </tr>
+     <tr>
+    <td>
+      <input type="submit" value="Login" >
+     </td>
+    </tr>
+      </table>
+</div>
 		</form>
 		</div>
 </body>

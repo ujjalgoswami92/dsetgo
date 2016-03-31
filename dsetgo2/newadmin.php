@@ -8,15 +8,32 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-         if($_POST["logout"])
-                   {
-                     header("Location: logout.php");
-                  }
-                  else if($_POST["MainMenu"])
-                  {
-                    header("Location: homepageadmin.php");
-                  }
-         ?>
+$content2='<input type="Submit" name="MainMenu" value="MainMenu">';
+$content='  <h2>ADMIN LOGIN</h2>
+<form name="userform"  action="newadmin.php" method="post" onsubmit="return validateForm()" >
+   <div class="lable">
+    <div class="col_1_of_1 span_1_of_3"><input type="text" name="afirstname" placeholder="FirstName"></div>
+   </div>
+   <div class="lable">
+     <div class="col_1_of_1 span_1_of_3">	<input type="text" name="alastname" placeholder="LastName">
+</div>
+   </div>
+   <div class="lable">
+    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="ausername" placeholder="Username">
+</div>
+   </div>
+   <div class="lable">
+     <div class="col_1_of_1 span_1_of_3">	<input type="password" name="apassword" placeholder="Password"></td>
+</div>
+
+<div class="lable">
+<div class="col_1_of_1 span_1_of_3">	<input type="password" name="aconfirmpassword" placeholder="Confirm Password"></td>
+</div>
+<input type="submit" name="Registeradmin" value="Register" >
+   </div>
+    </form>';
+require 'header.php';
+?>
 
          <script>
          function validateForm()
@@ -119,39 +136,6 @@ if($_SESSION["username"]=="")
 
          </script>
 
-
-
-
-
-<form  action="newadmin.php" method="POST"  >
-<table>
-<tr>
-<td>
-Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td>
-<td>
-<div class="lable">
- <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="logout" value="Logout">
-</div>
-</td>
-<td>
-<div class="lable">
- <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="MainMenu" value="MainMenu">
-</div>
-</td>
-</tr>
-</table>
-</form>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<link href="css/style.css" rel='stylesheet' type='text/css' />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-
 <script>
 function validateForm()
 {
@@ -208,62 +192,4 @@ function validateForm()
     }
 }
 
-
-
-
 </script>
-
-
-<div class="main">
-
-      <h2>ADMIN LOGIN</h2>
-		<form name="userform"  action="newadmin.php" method="post" onsubmit="return validateForm()" >
-		   <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3"><input type="text" name="afirstname" placeholder="FirstName"></div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" name="alastname" placeholder="LastName">
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" name="ausername" placeholder="Username">
-</div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="password" name="apassword" placeholder="Password"></td>
-</div>
-
-<div class="lable">
-  <div class="col_1_of_1 span_1_of_3">	<input type="password" name="aconfirmpassword" placeholder="Confirm Password"></td>
-</div>
-<input type="submit" name="Register" value="Register" >
-		   </div>
-       	</form>
-		</div>
-
-</body>
-</html>
-
-<?php
-         if($_POST["Register"])
-         {
-
-$afirstname=$_POST["afirstname"];
- $alastname=$_POST["alastname"];
- $ausername=$_POST["ausername"];
- $apassword=md5($_POST["apassword"]);
-
-
-
-
-           $sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password,type)
-           VALUES ('$afirstname', '$alastname', '$ausername','$apassword', 'nonsu')";
-           if ($conn->query($sql) === TRUE) {
-             echo "Admin Added successfully!";
-
-           } else {
-               echo "Error: " . $sql . "<br>" . $conn->error;
-           }
-}
- $conn->close();
-         ?>

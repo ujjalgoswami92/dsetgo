@@ -8,26 +8,8 @@ if($_SESSION["username"]=="")
   header("Location: login.php");
 }
 ?>
-<?php
-         if($_POST["Logout"])
-                   {
-                     header("Location: logout.php");
-                  }
-                  else if($_POST["MainMenu"])
-                  {
-                    header("Location: homepageadmin.php");
-                  }
-                  else if($_POST["ViewOrders"])
-                  {
-                    header('Location: viewcustomerorders.php?id='.$_POST["cidtext"].'');
-                  }
-
-         ?>
          <?php
           $customerid=$_GET["id"];
-
-
-
                     $sql2 = "SELECT * FROM dsetgo_customer where cid=$customerid";
                     $result = $conn->query($sql2);
                     if ($result->num_rows > 0) {
@@ -48,78 +30,49 @@ if($_SESSION["username"]=="")
                     }
                     $conn->close();
                   ?>
-<form action="customerprofile.php" method="POST">
-<table>
-<tr>
-<td>
-Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td>
-<td>
-<div class="lable">
- <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="logout" value="Logout">
-</div>
-</td>
-<td>
-<div class="lable">
- <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="MainMenu" value="MainMenu">
-</div>
-</td>
-</tr>
-</table>
-</form>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<link href="css/style.css" rel='stylesheet' type='text/css' />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-<div class="main">
+                  <?php
+                  $content2='<input type="Submit" name="MainMenu" value="MainMenu">';
+                  $content3='<input type="Submit" name="NewOrder" value="New Order">';
 
-      <h2>CUSTOMER PROFILE</h2>
-		<form action="customerprofile.php" method="post">
-		   <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3"><input type="text" readonly name="cfirstname" placeholder="FirstName" value=<?php echo $cfirstname ?>></div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="clastname" placeholder="LastName" value=<?php echo $clastname ?>>
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="caddress" placeholder="Customer Address" value=<?php echo $caddress ?>>
-</div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="cphonenumber" placeholder="Phone Number" value=<?php echo $cphonenumber ?>></td>
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="cemailid" placeholder="Email ID" value=<?php echo $cemailid ?>></td>
-</div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="creferralcode"  placeholder="Referral code" value=<?php echo $creferralcode ?>></td>
-</div>
-		   </div>
-       <div class="lable">
-		    <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="creferredby" placeholder="Referred By" value=<?php echo $creferredby ?>></td>
-        </div>
-		   </div>
-		   <div class="lable">
-				 <div class="col_1_of_1 span_1_of_3">	<input type="text" readonly name="cstatus" placeholder="Status" value="ACTIVE" value=<?php echo $cstatus ?>></td>
-         </div>
-		   </div>
-       <td>
-       <div class="lable">
-        <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="ViewOrders" value="View Orders">
-       </div>
-       </td>
-
-       <input type="text" readonly name="cidtext" style="display:none;" value="<?php echo $_GET["id"]; ?>" >
-		</form>
-		</div>
-
-</body>
-</html>
+                  $content="<h2>CUSTOMER PROFILE</h2>
+                  <form action='viewcustomerorders.php' method='post'>
+                   <div class='lable'>
+                    <div class='col_1_of_1 span_1_of_3'><input type='text' readonly name='cfirstname' placeholder='FirstName' value=$cfirstname></div>
+                   </div>
+                   <div class='lable'>
+                     <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='clastname' placeholder='LastName' value=$clastname>
+                  </div>
+                   </div>
+                   <div class='lable'>
+                    <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='caddress' placeholder='Customer Address' value=$caddress>
+                  </div>
+                   </div>
+                   <div class='lable'>
+                     <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='cphonenumber' placeholder='Phone Number' value=$cphonenumber></td>
+                  </div>
+                   </div>
+                   <div class='lable'>
+                    <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='cemailid' placeholder='Email ID' value=$cemailid></td>
+                  </div>
+                   </div>
+                   <div class='lable'>
+                     <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='creferralcode'  placeholder='Referral code' value= $creferralcode></td>
+                  </div>
+                   </div>
+                   <div class='lable'>
+                    <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='creferredby' placeholder='Referred By' value=$creferredby></td>
+                    </div>
+                   </div>
+                   <div class='lable'>
+                     <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='cstatus' placeholder='Status' value='ACTIVE' value=$cstatus></td>
+                     </div>
+                   </div>
+                   <td>
+                   <div class='lable'>
+                    <div class='col_1_of_2 span_1_of_3'>  <input type='Submit' name='ViewOrders' value='View Orders'>
+                   </div>
+                   </td>
+                   <input type='text' readonly name='cid' style='display:none;' value=$customerid >
+                  </form>";
+                  require 'header.php';
+                  ?>

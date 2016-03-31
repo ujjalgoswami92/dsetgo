@@ -34,12 +34,10 @@ else {
         {
           header("location: changepassword.php");
         }
-
         else if($_POST["newadmin"])
         {
           header("location: newadmin.php");
         }
-
         else if($_POST["logout"])
           {
             header("Location: logout.php");
@@ -64,6 +62,165 @@ else {
          {
            header("Location: addproducts.php");
          }
+         else if($_POST["ViewOrders"])
+         {
+           $cid=$_GET["cid"];
+           header('Location: viewcustomerorders.php?id='.$cid.'');
+         }
+         else if($_POST["registercustomer"])
+         {
+            header("Location: newuser.php");
+         }
+         else if($_POST["achangepassword"])
+         {
+
+$ausername=$_SESSION["username"];
+$aoldpassword=md5($_POST["aoldpassword"]);
+$anewpassword=md5($_POST["anewpassword"]);
+$aconfirmnewpassword=md5($_POST["aconfirmnewpassword"]);
+
+if ( $_POST["aoldpassword"]=='' || $_POST["anewpassword"]=='' ||$_POST["aconfirmnewpassword"]=='')
+{
+  echo "enter all the fields please";
+}
+else {
+
+  if($anewpassword==$aconfirmnewpassword)
+  {
+    $sql1 = "select password from dsetgo_admin where username='$ausername'";
+    $sql2 = "update dsetgo_admin set password='$aconfirmnewpassword' where username='$ausername' ";
+    $result = $conn->query($sql1);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+
+        while($row = $result->fetch_assoc()) {
+      if($row["password"]==$aoldpassword)
+      {
+        if ($conn->query($sql2) === TRUE) {
+          echo "password change successful!";
+        } else {
+          echo "Error: " . $sql1 . "<br>" . $conn->error;
+        }
+      }
+     else
+      {
+        echo "enter correct old password";
+      }
+  }
+      }
+    else {
+      echo "Invalid current password!";
+    }
+
+ }
+ else {
+echo "new passwords dont match!";
+   }
+ }
+}
+         else if($_POST["addproduct"])
+         {
+
+ $itemname=$_POST["itemname"];
+ $itemcategory=$_POST['category'];
+ $itemcost=$_POST["itemcost"];
+
+echo $itemcategory;
+
+           $sql1 = "INSERT INTO dsetgo_products (itemname, itemcost,itemcategory)
+           VALUES ('$itemname', '$itemcost','$itemcategory')";
+           if ($conn->query($sql1) === TRUE) {
+             echo "Item Added successfully!";
+           } else {
+               echo "Error: " . $sql1 . "<br>" . $conn->error;
+           }
+
+}
+         else if($_POST["cid"])
+         {
+           echo $_POST["cid"];
+         }
+        else if($_POST["Registeradmin"])
+         {
+
+$afirstname=$_POST["afirstname"];
+ $alastname=$_POST["alastname"];
+ $ausername=$_POST["ausername"];
+ $apassword=md5($_POST["apassword"]);
+
+           $sql = "INSERT INTO dsetgo_admin (firstname, lastname, username,password,type)
+           VALUES ('$afirstname', '$alastname', '$ausername','$apassword', 'nonsu')";
+           if ($conn->query($sql) === TRUE) {
+             echo "Admin Added successfully!";
+
+           } else {
+               echo "Error: " . $sql . "<br>" . $conn->error;
+           }
+         }
+         else if ($_POST["searchcustomer"])
+         {
+           $PhoneNumber=$_POST["cphonenumber"];
+           $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
+           $result = $conn->query($sql2);
+           if ($result->num_rows > 0) {
+               while($row = $result->fetch_assoc()) {
+             header('Location: confirmorder.php?no='.$PhoneNumber.'');
+               }
+           }
+           else {
+             echo "Customer not found";
+           }
+         }
+         else if($_POST["Register"])
+         {
+
+$cfirstname=$_POST["cfirstname"];
+ $clastname=$_POST["clastname"];
+ $caddress=$_POST["caddress"];
+ $cphonenumber=$_POST["cphonenumber"];
+ $cemailid=$_POST["cemailid"];
+ $creferralcode=$_POST["creferralcode"];
+ $creferredby=$_POST["creferredby"];
+ $cstatus=$_POST["cstatus"];
+
+           $sql1 = "INSERT INTO dsetgo_customer (cfirstname, clastname,caddress,cphonenumber,cemailid,creferralcode,creferredby,cstatus)
+           VALUES ('$cfirstname', '$clastname', '$caddress','$cphonenumber','$cemailid','$creferralcode','$creferredby','$cstatus')";
+echo "Customer Added successfully!";
+           if ($conn->query($sql1) === TRUE) {
+
+             $msg = "Thankyou for being a part of the captaindhobi.We here at Captain Dhobi are at determined to provide full customer satisfaction with your dhobi experience.\nWe will keep in touch.\n-Team CaptainDhobi";
+             $msg = wordwrap($msg,70);
+         $to = $cemailid;
+         $subject = 'CaptainDhobi- Registration Successful!';
+         $from = 'support@captaindhobi.com';
+
+         // To send HTML mail, the Content-type header must be set
+         $headers  = 'MIME-Version: 1.0' . "\r\n";
+         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+         // Create email headers
+         $headers .= 'From: '.$from."\r\n".
+         'Reply-To: '.$from."\r\n" .
+         'X-Mailer: PHP/' . phpversion();
+
+         // Compose a simple HTML email message
+         $message = '<html><body>';
+         $message .='Greetings '.$cfirstname.',</br>';
+         $message .= $msg;
+         $message .= '</body></html>';
+
+         // Sending email
+         if(mail($to, $subject, $message, $headers)){
+         echo 'Your mail has been sent successfully.';
+         } else{
+         echo 'Unable to send email. Please try again.';
+         }
+           }
+            else {
+               echo "Error: " . $sql1 . "<br>" . $conn->error;
+           }
+         }
  $conn->close();
          ?>
 <form action="homepageadmin.php" method="POST">
@@ -79,6 +236,7 @@ else {
 <?php echo $content2;?>
 </td>
 <td>
+  <?php echo $content3;?>
 </td>
 </tr>
   </table>
@@ -174,7 +332,17 @@ border-width:0px 0px 1px 0px;
 }
 .table4 tr:first-child td:last-child{
 border-width:0px 0px 1px 1px;
-} </style>
+}
+  #products option {
+width: 50px;
+}
+#products{
+width:150px;
+}
+.products {
+font-size: 50px;
+}​
+</style>
 
 <meta charset="utf-8">
 <link href="css/style.css" rel='stylesheet' type='text/css' />
