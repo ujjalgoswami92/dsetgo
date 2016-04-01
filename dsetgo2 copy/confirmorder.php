@@ -7,129 +7,19 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-function sendmail()
-{
- $msg = "It was a pleasure serving you. Please find the receipt of your order as follows:\n\n\n"."<html><body>".$dr1."</body></html>"."\nWe hope to serve you again soon."."\n</br>-Team CaptainDhobi";
- $msg = wordwrap($msg,70);
-$to = $cemailid;
-$subject = 'CaptainDhobi-Order Receipt!';
-$from = 'support@captaindhobi.com';
-
-// To send HTML mail, the Content-type header must be set
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-// Create email headers
-$headers .= 'From: '.$from."\r\n".
-'Reply-To: '.$from."\r\n" .
-'X-Mailer: PHP/' . phpversion();
-
-// Compose a simple HTML email message
-$message = '<html><body>';
-$message .='Greetings '.$cfirstname.',</br>';
-$message .= $msg;
-$message .= '</body></html>';
-
-// Sending email
-if(mail($to, $subject, $message, $headers)){
-echo 'Your mail has been sent successfully.';
-} else{
-echo 'Unable to send email. Please try again.';
-}
-
-}
- ?>
-
-
-<?php
-if($_POST["additem"])
- {
-   $max=$_POST["total"];
-   $sum=0;
-   $flag=0;
-   for($i=1;$i<=$max;$i++)
-   {
-     if($_POST["qty".$i]!="")
-     {
-       $flag=1;
-       $sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
-   }
- }
- if($flag==1)
- {
-       $orderid =  $cid.mt_rand();
-       $sql = "INSERT INTO dsetgo_orders (orderid,oamount,cid,orderstatus)
-       VALUES ('$orderid','$sum', '$cid','pending')";
-       if ($conn->query($sql) === TRUE) {
-           echo "order table updated successful";
-       } else {
-           echo "Error inserting data in order table: " . $conn->error;
-       }
-
-
-
-       for($i=1;$i<=$max;$i++)
-       {
-       if($_POST["qty".$i]!="")
-       {
-       $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Qty</p></strong></td> ';
-       //$sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
-       $itemname=$_POST["itemname".$i];
-       $itemcost=$_POST["itemcost".$i];
-       $itemcategory=$_POST["itemcategory".$i];
-       $itemqty=$_POST["qty".$i];
-       echo $dr0;
-
-       //echo $itemname.'    '.$itemcategory.'      '.$itemcost;
-       $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
-       $dr.='<tr><td>'.$_POST["itemname".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["itemcost".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["qty".$i].'</td></tr>';
-
-
-       $dr1='<table>'.$dr0.$dr.'</table>'.'</br></br><p><strong>Total Amount: Rs'.$sum.'</p></strong></br></br>';
-
-
-
-
-        $sql1="SELECT itemid, itemcost FROM dsetgo_products where itemname='$itemname' and itemcost=$itemcost";
-         $result1=$conn->query($sql1);
-        if ($result1->num_rows > 0 ) {
-         $row1 = $result1->fetch_assoc();
-        $sql3 = "INSERT INTO dsetgo_products_orders (itemid,orderid,quantity,orderprice)
-        VALUES ('$row1[itemid]','$orderid','$itemqty','$row1[itemcost]')";
-        if ($conn->query($sql3)==TRUE ) {
-         echo "table products_orders updates successfully";
-       } else {
-         echo "Error updating products_orders table: " . $conn->error;
-       }
-
-       } else
-        {
-              echo "result2-->Invalid dataujj1";
-        }
-       } else {
-          echo "result1-->Invalid dataujj2";
-        }
-
-       }
-
-
-
-
-
-
-
-
-sendmail();
-
- }
- else {
-   echo "nothing selected for order";
- }
-
-
-}
- ?>
-
+         if($_POST["logout"])
+                   {
+                     header("Location: logout.php");
+                  }
+                  else if($_POST["MainMenu"])
+                  {
+                    header("Location: homepageadmin.php");
+                  }
+                  else if($_POST["neworder"])
+                  {
+                     header("Location: neworder.php");
+                  }
+         ?>
          <?php
            $sql2 = "SELECT * FROM dsetgo_products";
            $result = $conn->query($sql2);
@@ -151,6 +41,7 @@ $i=1;
          $max=$_POST["total"];
          $PhoneNumber=$_GET["no"];
          $cphonenumber=$PhoneNumber;
+              $customerfound="true";
                $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
                $result = $conn->query($sql2);
                if ($result->num_rows > 0) {
@@ -172,10 +63,7 @@ $i=1;
                    echo "Customer not found!!";
                }
 
-          ?>
 
-<<<<<<< Updated upstream
-=======
        if($_POST["additem"])
         {
 
@@ -270,13 +158,16 @@ if($_POST["qty".$i]!="")
           $to = $cemailid;
 $subject = 'CaptainDhobi-Order Receipt!';
 $from = 'support@captaindhobi.com';
->>>>>>> Stashed changes
 
+// To send HTML mail, the Content-type header must be set
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
+// Create email headers
+$headers .= 'From: '.$from."\r\n".
+    'Reply-To: '.$from."\r\n" .
+    'X-Mailer: PHP/' . phpversion();
 
-<<<<<<< Updated upstream
-
-=======
 // Compose a simple HTML email message
 
 // Sending email
@@ -301,35 +192,85 @@ if(mail($to, $subject, $message, $headers)){
           $conn->close();
 
           ?>
->>>>>>> Stashed changes
 
-         <?php
-         $content2='<input type="Submit" name="MainMenu" value="MainMenu">';
-         $content3='<input type="Submit" name="NewOrder" value="New Order">';
-         $content="  <h2>CONFIRM ORDER</h2>
-         <form  action='' method='post' >
-            <div class='lable'>
-             <div class='col_1_of_1 span_1_of_3'><input type='text'  name='cfirstname' placeholder='FirstName' readonly value=$cfirstname></div>
-            </div>
-            <div class='lable'>
-              <div class='col_1_of_1 span_1_of_3'>	<input type='text'  name='clastname' placeholder='LastName' readonly  value=$clastname>
-         </div>
-            </div>
-            <div class='lable'>
-             <div class='col_1_of_1 span_1_of_3'>	<input type='text'  name='caddress' placeholder='Customer Address' readonly  value=$caddress>
-         </div>
-            </div>
-            <div class='lable'>
-             <div class='col_1_of_1 span_1_of_3'>	<input type='text'  name='cemailid' placeholder='Email ID'  readonly value=$cemailid></td>
-         </div>
-            </div>
-            <div class='lable'>
-              <div class='col_1_of_1 span_1_of_3'>	<input type='text'  name='cphonenumber' placeholder='Phone Number' readonly value=$cphonenumber></td>
-           </div>
-            </div>
-            $dynamicList
-            $dr1
-            <input type='Submit' name='additem' value='Create Total/Generate Receipt'>
-         </form>";
-         require 'header.php';
-         ?>
+         <head>
+<style>
+           #products option {
+    width: 50px;
+}
+#products{
+ width:150px;
+}
+.products {
+   font-size: 50px;
+}​
+</style>
+         </head>
+<form action="confirmorder.php" method="POST">
+<table>
+<tr>
+<td>
+Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+<div class="lable">
+ <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="logout" value="Logout">
+</div>
+</td>
+<td>
+<div class="lable">
+ <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="MainMenu" value="MainMenu">
+</div>
+</td>
+<td>
+  <div <?php echo $showorhideregister;?>>
+    <input type="Submit" name="neworder" value="New Order">
+  </div>
+
+</td>
+</tr>
+</table>
+</form>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="main">
+
+      <h2>CONFIRM ORDER</h2>
+		<form  action="" method="post" >
+
+
+		   <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3"><input type="text"  name="cfirstname" placeholder="FirstName" readonly value=<?php echo $cfirstname ?>></div>
+		   </div>
+		   <div class="lable">
+				 <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="clastname" placeholder="LastName" readonly  value=<?php echo $clastname ?>>
+</div>
+		   </div>
+       <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="caddress" placeholder="Customer Address" readonly  value=<?php echo $caddress ?>>
+</div>
+		   </div>
+		   <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cemailid" placeholder="Email ID"  readonly value=<?php echo $cemailid ?>></td>
+</div>
+		   </div>
+       <div class="lable">
+         <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cphonenumber" placeholder="Phone Number" readonly value=<?php echo $cphonenumber ?>></td>
+      </div>
+       </div>
+       <?php echo $dynamicList;?>
+       <?php echo $dr1;?>
+       <input type="Submit" name="additem" value="Create Total/Generate Receipt">
+
+  </form>
+
+</div>
+</body>
+</html>

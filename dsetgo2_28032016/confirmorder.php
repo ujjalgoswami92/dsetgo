@@ -1,0 +1,390 @@
+<?php
+require 'connect.inc.php';
+session_start();
+if($_SESSION["username"]=="")
+{
+  header("Location: login.php");
+}
+?>
+<?php
+         if($_POST["logout"])
+                   {
+                     header("Location: logout.php");
+                  }
+                  else if($_POST["MainMenu"])
+                  {
+                    header("Location: homepageadmin.php");
+                  }
+                  else if($_POST["neworder"])
+                  {
+                     header("Location: neworder.php");
+                  }
+         ?>
+         <?php
+           $sql2 = "SELECT * FROM dsetgo_products";
+           $result = $conn->query($sql2);
+          $dynamicList1='<fieldset><legend>Available Items:';
+$i=1;
+           if ($result->num_rows > 0) {
+               while($row = $result->fetch_assoc()) {
+              $itemcategory= $row["itemcategory"];
+    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /><input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
+    $i=$i+1;
+           }
+           } else {
+               echo "Invalid data";
+           }
+           $i=$i-1;
+           $dynamicList=$dynamicList1.$dynamicList.'</fieldset></br>'.'<input type="text" style="display:none;" readonly name="total" value="'.$i.'" />'
+         ?>
+         <?php
+         $max=$_POST["total"];
+         $PhoneNumber=$_GET["no"];
+         $cphonenumber=$PhoneNumber;
+              $customerfound="true";
+               $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
+               $result = $conn->query($sql2);
+               if ($result->num_rows > 0) {
+                   while($row = $result->fetch_assoc()) {
+               //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
+                  //$customerfound="true";
+   $cfirstname=$row["cfirstname"];
+   $clastname=$row["clastname"];
+   $caddress=$row["caddress"];
+   $cemailid=$row["cemailid"];
+   $creferralcode=$row["creferralcode"];
+   $creferredby=$row["creferredby"];
+   $cstatus=$row["cstatus"];
+   $cid=$row["cid"];
+                   }
+               } else {
+                 //$customerfound="true";
+
+                   echo "Customer not found!!";
+               }
+
+
+       if($_POST["additem"])
+        {
+
+
+        //  $j=1;$k=2;
+
+
+          $max=$_POST["total"];
+         //echo "max-->".$max;
+          $sum=0;
+          $flag=0;
+          $sum_item=0;
+          for($i=1;$i<=$max;$i++)
+          {
+
+            if($_POST["qty".$i]!="")
+            {
+              $flag=1;
+             $sum_item=$_POST["qty".$i]*$_POST["itemcost".$i];
+             $sum=$sum+$sum_item;
+
+          }
+        }
+       //echo $sum;
+       // flag used for only creating order id when there is some item selected
+
+
+
+
+
+        if($flag==1)
+        {
+              $orderid =  $cid.mt_rand();
+              //echo $orderid;
+          $sql = "INSERT INTO dsetgo_orders (orderid,oamount,cid,orderstatus)
+          VALUES ('$orderid','$sum', '$cid','pending')";
+          if ($conn->query($sql) === TRUE) {
+              echo "order table updated successful";
+
+          } else {
+              echo "Error inserting data in order table: " . $conn->error;
+          }
+
+      }
+else {
+  echo "nothing selected for order";
+}
+
+
+
+
+
+          for($i=1;$i<=$max;$i++)
+          {
+if($_POST["qty".$i]!="")
+{
+   $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Category</p></strong></td>   <td>&nbsp;&nbsp;&nbsp;&nbsp;  </td><td><p><strong>Item Qty</p></strong></td> ';
+   //$sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
+   $itemname=$_POST["itemname".$i];
+   $itemcost=$_POST["itemcost".$i];
+   $itemcategory=$_POST["itemcategory".$i];
+   $itemqty=$_POST["qty".$i];
+   //echo $itemname.'    '.$itemcategory.'      '.$itemcost;
+   $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
+  $dr.='<tr><td>'.$_POST["itemname".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["itemcost".$i].'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$_POST["qty".$i].'</td></tr>';
+
+
+          $dr1='<table>'.$dr0.$dr.'</table>'.'</br></br><p><strong>Total Amount: Rs'.$sum.'</p></strong></br></br>';
+
+
+
+
+           $sql1="SELECT itemid, itemcost FROM dsetgo_products where itemname='$itemname' and itemcost=$itemcost";
+//            //$sql2="SELECT max(orderid) m from dsetgo_orders";
+           $result1=$conn->query($sql1);
+//            //$result2=$conn->query($sql2);
+           if ($result1->num_rows > 0 ) {
+            $row1 = $result1->fetch_assoc();
+
+
+           $sql3 = "INSERT INTO dsetgo_products_orders (itemid,orderid,quantity,orderprice)
+           VALUES ('$row1[itemid]','$orderid','$itemqty','$row1[itemcost]')";
+           if ($conn->query($sql3)==TRUE ) {
+            echo "table products_orders updates successfully";
+          } else {
+            echo "Error updating products_orders table: " . $conn->error;
+          }
+
+         } else
+           {
+                 echo "result2-->Invalid data";
+           }
+         }
+}
+
+
+
+
+
+          $msg = "It was a pleasure serving you. Please find the receipt of your order as follows:\n\n\n"."<html><body>".$dr1."</body></html>"."\nWe hope to serve you again soon."."\n</br>-Team CaptainDhobi";
+          $msg = wordwrap($msg,70);
+$to = $cemailid;
+$subject = 'CaptainDhobi-Order Receipt!';
+$from = 'support@captaindhobi.com';
+
+// To send HTML mail, the Content-type header must be set
+$headers  = 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+// Create email headers
+$headers .= 'From: '.$from."\r\n".
+    'Reply-To: '.$from."\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+
+// Compose a simple HTML email message
+
+
+$dynamicList="<table cellspacing='0' cellpadding='0' border='0' width='650' style='border:1px solid #eaeaea'><thead><tr><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Item</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Type</th><th align='center' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Quantity</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Price</th><th align='right' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Subtotal</th></tr></thead>";
+
+$dynamicList.= "<tbody bgcolor='#F6F6F6'>";
+//
+for($i=1;$i<=$max;$i++)
+{
+  $dynamicList.="<tr><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> <strong style='font-size:11px'> $itemname</strong></td><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>$itemcategory</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> $itemqty </td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> ₹$itemcost</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>₹$sum_item</td></tr>";
+}
+$dynamicList.="</tbody><tbody></tbody><tbody><tr><td colspan='5' align='right' style='padding:3px 9px'> Total</td><td align='right' style='padding:3px 9px'> <span>₹$sum</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> Shipping &amp; Handling</td><td align='right' style='padding:3px 9px'> <span>₹0</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> Discount </td><td align='right' style='padding:3px 9px'> <span>₹0</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> <strong>Grand Total</strong></td><td align='right' style='padding:3px 9px'> <strong><span>₹$sum</span></strong></td></tr></tbody></table>";
+
+
+
+
+
+
+
+$message="
+<div style='background:#f6f6f6;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;margin:0;padding:0'><div class='adM'>
+  </div><table cellspacing='0' cellpadding='0' border='0' width='100%'>
+    <tbody><tr>
+      <td align='center' valign='top' style='padding:20px 0 20px 0'><table bgcolor='#FFFFFF' cellspacing='0' cellpadding='10' border='0' width='650' style='border:1px solid #e0e0e0'>
+
+          <tbody><tr>
+            <td valign='top'><a href='http://www.dcgpac.com/' target='_blank'><img src='https://ci5.googleusercontent.com/proxy/BRqf8Dj5jQFoGu_7GVG8auD1GEKdYaLRhXsjiCJApMzNmRHCjz8Xqe5eWTb8nLbR-5tSJGXdIKe8_1QGtpQqRTNzCp7yLnS3xAPXmpPBxJ0=s0-d-e1-ft#http://www.dcgpac.com/media/email/logo/websites/1/logo.png' alt='DCGPAC' style='margin-bottom:10px' border='0' class='CToWUd'></a></td>
+          </tr>
+
+          <tr>
+            <td valign='top'><h1 style='font-size:22px;font-weight:normal;line-height:22px;margin:0 0 11px 0'>Hello, $cfirstname  $clastname </h1>
+            <p style='font-size:12px;line-height:16px;margin:0'> Thank you for your order. We will take care of your clothes. We will send you updates
+                to help you track your order. For any query kindly contact us on support@captaindhobi.com or call us on +9958563058</p></td>
+          </tr>
+          <tr>
+            <td><h2 style='font-size:18px;font-weight:normal;margin:0'>Your Order $orderid <small> (placed on </small></h2></td>
+          </tr>
+
+          <tr>
+            <td>
+
+$dynamicList
+          </td></tr>
+
+          <tr>
+
+            <td><table cellspacing='0' cellpadding='0' border='0' width='650'>
+                <thead>
+                  <tr>
+                    <th align='left' width='325' bgcolor='#EAEAEA' style='font-size:13px;padding:5px 9px 6px 9px;line-height:1em'>Billing Information:</th>
+                    <th width='10'></th>
+                    <th align='left' width='325' bgcolor='#EAEAEA' style='font-size:13px;padding:5px 9px 6px 9px;line-height:1em'>Payment Method:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td valign='top' style='font-size:12px;padding:7px 9px 9px 9px;border-left:1px solid #eaeaea;border-bottom:1px solid #eaeaea;border-right:1px solid #eaeaea'>Name: $cfirstname  $clastname <br>
+                    Email: $cemailid <br>
+                    Phone: $cphonenumber
+ </td>
+                    <td>&nbsp;</td>
+                    <td valign='top' style='font-size:12px;padding:7px 9px 9px 9px;border-left:1px solid #eaeaea;border-bottom:1px solid #eaeaea;border-right:1px solid #eaeaea'> <p>Cash on Delivery</p> </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+
+              <table cellspacing='0' cellpadding='0' border='0' width='650'>
+                <thead>
+                  <tr>
+                    <th align='left' width='325' bgcolor='#EAEAEA' style='font-size:13px;padding:5px 9px 6px 9px;line-height:1em'>Shipping Information:</th>
+                    <th width='10'></th>
+                    <th align='left' width='325' bgcolor='#EAEAEA' style='font-size:13px;padding:5px 9px 6px 9px;line-height:1em'>Shipping Method:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td valign='top' style='font-size:12px;padding:7px 9px 9px 9px;border-left:1px solid #eaeaea;border-bottom:1px solid #eaeaea;border-right:1px solid #eaeaea'>
+
+                    Address: $caddress
+
+
+                      &nbsp; </td>
+                    <td>&nbsp;</td>
+                    <td valign='top' style='font-size:12px;padding:7px 9px 9px 9px;border-left:1px solid #eaeaea;border-bottom:1px solid #eaeaea;border-right:1px solid #eaeaea'> Ground Shipping
+                      &nbsp; </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+               </td>
+          </tr>
+          <tr>
+            <td bgcolor='#EAEAEA' align='center' style='background:#eaeaea;text-align:center'><center>
+                <p style='font-size:12px;margin:0'>Thank you, we hope you liked our service<strong></strong></p>
+              </center></td>
+          </tr>
+        </tbody></table></td>
+    </tr>
+  </tbody></table><div class='yj6qo'></div><div class='adL'>
+</div></div>
+";
+
+
+
+
+
+
+// Sending email
+if(mail($to, $subject, $message, $headers)){
+    echo 'Your mail has been sent successfully.';
+} else{
+    echo 'Unable to send email. Please try again.';
+}
+
+}
+         if($customerfound=="true")
+         {
+           $showorhidediv='';
+    //       $showorhideregister='style="display:none;"';
+         }
+         else {
+           $showorhidediv='style="display:none;"';
+           $showorhideregister='';
+
+         }
+          $conn->close();
+          ?>
+
+         <head>
+<style>
+           #products option {
+    width: 50px;
+}
+#products{
+ width:150px;
+}
+.products {
+   font-size: 50px;
+}​
+</style>
+         </head>
+<form action="confirmorder.php" method="POST">
+<table>
+<tr>
+<td>
+Welcome <?php echo $_SESSION["username"];?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+<td>
+<div class="lable">
+ <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="logout" value="Logout">
+</div>
+</td>
+<td>
+<div class="lable">
+ <div class="col_1_of_2 span_1_of_3">  <input type="Submit" name="MainMenu" value="MainMenu">
+</div>
+</td>
+<td>
+  <div <?php echo $showorhideregister;?>>
+    <input type="Submit" name="neworder" value="New Order">
+  </div>
+
+</td>
+</tr>
+</table>
+</form>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="main">
+
+      <h2>CONFIRM ORDER</h2>
+		<form  action="" method="post" >
+
+
+		   <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3"><input type="text"  name="cfirstname" placeholder="FirstName" readonly value=<?php echo $cfirstname ?>></div>
+		   </div>
+		   <div class="lable">
+				 <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="clastname" placeholder="LastName" readonly  value=<?php echo $clastname ?>>
+</div>
+		   </div>
+       <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="caddress" placeholder="Customer Address" readonly  value=<?php echo $caddress ?>>
+</div>
+		   </div>
+		   <div class="lable">
+		    <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cemailid" placeholder="Email ID"  readonly value=<?php echo $cemailid ?>></td>
+</div>
+		   </div>
+       <div class="lable">
+         <div class="col_1_of_1 span_1_of_3">	<input type="text"  name="cphonenumber" placeholder="Phone Number" readonly value=<?php echo $cphonenumber ?>></td>
+      </div>
+       </div>
+       <?php echo $dynamicList;?>
+       <?php echo $dr1;?>
+       <input type="Submit" name="additem" value="Create Total/Generate Receipt">
+
+  </form>
+
+</div>
+</body>
+</html>
