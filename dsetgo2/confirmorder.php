@@ -7,7 +7,7 @@ if($_SESSION["username"]=="")
 }
 ?>
 <?php
-function sendmail()
+function sendmail($cemailid)
 {
  $msg = "It was a pleasure serving you. Please find the receipt of your order as follows:\n\n\n"."<html><body>".$dr1."</body></html>"."\nWe hope to serve you again soon."."\n</br>-Team CaptainDhobi";
  $msg = wordwrap($msg,70);
@@ -40,7 +40,32 @@ echo 'Unable to send email. Please try again.';
 }
  ?>
 
+ <?php
+ $max=$_POST["total"];
+ $PhoneNumber=$_GET["no"];
+ $cphonenumber=$PhoneNumber;
+       $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
+       $result = $conn->query($sql2);
+       if ($result->num_rows > 0) {
+           while($row = $result->fetch_assoc()) {
+       //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
+          //$customerfound="true";
+ $cfirstname=$row["cfirstname"];
+ $clastname=$row["clastname"];
+ $caddress=$row["caddress"];
+ $cemailid=$row["cemailid"];
+ $creferralcode=$row["creferralcode"];
+ $creferredby=$row["creferredby"];
+ $cstatus=$row["cstatus"];
+ $cid=$row["cid"];
+           }
+       } else {
+         //$customerfound="true";
 
+           echo "Customer not found!!";
+       }
+
+  ?>
 <?php
 if($_POST["additem"])
  {
@@ -78,7 +103,6 @@ if($_POST["additem"])
        $itemcost=$_POST["itemcost".$i];
        $itemcategory=$_POST["itemcategory".$i];
        $itemqty=$_POST["qty".$i];
-       echo $dr0;
 
        //echo $itemname.'    '.$itemcategory.'      '.$itemcost;
        $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
@@ -86,8 +110,6 @@ if($_POST["additem"])
 
 
        $dr1='<table>'.$dr0.$dr.'</table>'.'</br></br><p><strong>Total Amount: Rs'.$sum.'</p></strong></br></br>';
-
-
 
 
         $sql1="SELECT itemid, itemcost FROM dsetgo_products where itemname='$itemname' and itemcost=$itemcost";
@@ -112,14 +134,7 @@ if($_POST["additem"])
 
        }
 
-
-
-
-
-
-
-
-sendmail();
+sendmail($cemailid);
 
  }
  else {
@@ -147,37 +162,6 @@ $i=1;
            $i=$i-1;
            $dynamicList=$dynamicList1.$dynamicList.'</fieldset></br>'.'<input type="text" style="display:none;" readonly name="total" value="'.$i.'" />'
          ?>
-         <?php
-         $max=$_POST["total"];
-         $PhoneNumber=$_GET["no"];
-         $cphonenumber=$PhoneNumber;
-               $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
-               $result = $conn->query($sql2);
-               if ($result->num_rows > 0) {
-                   while($row = $result->fetch_assoc()) {
-               //   echo "Customerid: " . $row["cid"]. " - Name: " . $row["cfirstname"]. " " . $row["clastname"]. " " . $row["caddress"]. " " . $row["cphonenumber"]. " " . $row["cemailid"]. " " . $row["creferralcode"]." ". $row["creferredby"]." ".$row["cstatus"].  " " . $row["reg_date"]."<br>";
-                  //$customerfound="true";
-   $cfirstname=$row["cfirstname"];
-   $clastname=$row["clastname"];
-   $caddress=$row["caddress"];
-   $cemailid=$row["cemailid"];
-   $creferralcode=$row["creferralcode"];
-   $creferredby=$row["creferredby"];
-   $cstatus=$row["cstatus"];
-   $cid=$row["cid"];
-                   }
-               } else {
-                 //$customerfound="true";
-
-                   echo "Customer not found!!";
-               }
-
-          ?>
-
-
-
-
-
 
          <?php
          $content2='<input type="Submit" name="MainMenu" value="MainMenu">';
