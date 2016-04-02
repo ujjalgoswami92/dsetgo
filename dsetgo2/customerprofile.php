@@ -44,7 +44,7 @@ if($_SESSION["username"]=="")
                   </div>
                    </div>
                    <div class='lable'>
-                    <div class='col_1_of_1 span_1_of_3'>	<input type='text' readonly name='caddress' placeholder='Customer Address' value=$caddress>
+                    <div class='col_1_of_1 span_1_of_3'>	<textarea rows='3' cols='89' readonly name='comment' form='usrform'>$caddress</textarea>
                   </div>
                    </div>
                    <div class='lable'>

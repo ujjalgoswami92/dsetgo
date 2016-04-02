@@ -75,23 +75,51 @@ $posts=array('cid'=>$row["cid"],'cfirstname'=>$row["cfirstname"]);
 		header('Content-type: application/json');
 		echo json_encode($posts);
 		//echo $posts;*/
+//
+// 			$sql2 = "select * from dsetgo_orders do";
+//   $result = $conn->query($sql2);
+// 	$posts = array();
+// $i=1;
+//   if ($result->num_rows > 0) {
+//       while($row = $result->fetch_assoc()) {
+//
+//         				$posts[$i]=array($i=>(array($row["orderid"],$row["cphonenumber"])));
+// 					$i++;
+// 					}
+//                     } else {
+//                       $posts = array('customerdetail'=>"0");
+//                     }
+//
+// 		header('Content-type: application/json');
+// 		echo json_encode($posts);
+//
+//
 
-			$sql2 = "select do.orderid, dc.cphonenumber from dsetgo_orders do, dsetgo_customer dc where do.cid=dc.cid and status='$ostatus'";
-  $result = $conn->query($sql2);
-	$posts = array();
-$i=1;
-  if ($result->num_rows > 0) {
-      while($row = $result->fetch_assoc()) {
+//  $sql2 = "select * from dsetgo_orders where orderstatus='$ostatus'";
+//  $result = $conn->query($sql2);
+//  $emparray = array();
+//     while($row =mysqli_fetch_assoc($result))
+//     {
+//         $emparray[] = $row;
+//     }
+//
+// 		$abc= json_encode($emparray);
+// echo serialize($abc);
+// //var_dump(json_decode($abc, true));
 
-        				$posts[$i]=array($i=>(array($row["orderid"],$row["cphonenumber"])));
-					$i++;
-					}
-                    } else {
-                      $posts = array('customerdetail'=>"0");
-                    }
 
-		header('Content-type: application/json');
-		echo json_encode($posts);
+$x = 1;
+$return_arr = array();
+$sql2 = "select * from dsetgo_orders where orderstatus='$ostatus'";
+$result = $conn->query($sql2);
+while( $obj = $result->fetch_object() ) {
+   $row_array[$x] = $obj->orderid;
+   $x++;
+}
+
+array_push($return_arr,$row_array);
+echo json_encode($return_arr);
+
 }
 //echo $Webservicename;
 switch($Webservicename)
