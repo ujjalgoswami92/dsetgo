@@ -238,6 +238,9 @@ echo "Customer Added successfully!";
 <td>
   <?php echo $content3;?>
 </td>
+<td>
+  <?php echo $content4;?>
+</td>
 </tr>
   </table>
 </form>
