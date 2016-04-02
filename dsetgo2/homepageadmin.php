@@ -1,6 +1,25 @@
 <?php
 require 'connect.inc.php';
 require 'core.inc.php';
+session_start();
+$username= $_SESSION["username"];
+$type="";
+$sql = "SELECT type FROM dsetgo_admin where username='$username'";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+  $type=$row["type"];
+    }
+  }
+if($type=="su")
+{
+  $content4='<input type="Submit" name="newadmin" value="new admin">';
+}
+else {
+  $content4='';
+}
+?>
+<?php
 $content2='  <input type="Submit" name="changepassword" value="Change Password">';
 $content='<h2>HOME PAGE</h2>
  <form action="homepageadmin.php" method="post">
@@ -45,12 +64,6 @@ $content='<h2>HOME PAGE</h2>
 </br>
 </br>
 <table>
-<tr>
-  <td>
-    <?php echo $hideorshowdiv;?>  <input type="Submit" name="newadmin" value="new admin">
-
-  </td>
-</tr>
 </table>
     </form>
 ';
