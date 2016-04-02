@@ -5,6 +5,8 @@ $sql = "CREATE TABLE dsetgo_customer (
 cid INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
 cfirstname VARCHAR(30) NOT NULL,
 clastname VARCHAR(30),
+cstreet VARCHAR(15) NOT NULL,
+
 caddress VARCHAR(100) NOT NULL ,
 cphonenumber VARCHAR(50) UNIQUE NOT NULL,
 cemailid VARCHAR(50) NOT NULL UNIQUE,

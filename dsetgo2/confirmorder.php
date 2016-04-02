@@ -98,18 +98,32 @@ if($_POST["additem"])
            echo "no data found";
          }
 
-
+$sum=0;
 
        for($i=1;$i<=$max;$i++)
        {
        if($_POST["qty".$i]!="")
        {
+
+
+         $dynamicList0="<table cellspacing='0' cellpadding='0' border='0' width='650' style='border:1px solid #eaeaea'><thead><tr><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Item</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Type</th><th align='center' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Quantity</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Price</th><th align='right' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Subtotal</th></tr></thead><tbody bgcolor='#F6F6F6'>";
+
+
        $dr0='<tr><td><p><strong>Item Name</strong></p></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Cost</p></strong></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td><p><strong>Item Qty</p></strong></td> ';
        //$sum=$sum+$_POST["qty".$i]*$_POST["itemcost".$i];
        $itemname=$_POST["itemname".$i];
        $itemcost=$_POST["itemcost".$i];
        $itemcategory=$_POST["itemcategory".$i];
        $itemqty=$_POST["qty".$i];
+       $sum_item=$_POST["qty".$i]*$_POST["itemcost".$i];
+       $sum=$sum+$sum_item;
+       echo $itemcategory;
+
+
+       $dynamicList1.="<tr><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> <strong style='font-size:11px'> $itemname</strong></td><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>$itemcategory</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> $itemqty </td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> ₹$itemcost</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>₹$sum_item</td></tr>";
+
+
+
 
        //echo $itemname.'    '.$itemcategory.'      '.$itemcost;
        $products.=$_POST["itemname".$i]."(".$_POST["qty".$i].")".",";
@@ -140,22 +154,12 @@ if($_POST["additem"])
         }
 
        }
-
-
-       $dynamicList1="<table cellspacing='0' cellpadding='0' border='0' width='650' style='border:1px solid #eaeaea'><thead><tr><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Item</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Type</th><th align='center' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Quantity</th><th align='left' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Price</th><th align='right' bgcolor='#EAEAEA' style='font-size:13px;padding:3px 9px'>Subtotal</th></tr></thead>";
-
-       $dynamicList1.= "<tbody bgcolor='#F6F6F6'>";
-       //
-       for($i=1;$i<=$max;$i++)
-       {
-
-         $dynamicList1.="<tr><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> <strong style='font-size:11px'> $itemname</strong></td><td align='left' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>$itemcategory</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> $itemqty </td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'> ₹$itemcost</td><td align='center' valign='top' style='font-size:11px;padding:3px 9px;border-bottom:1px dotted #cccccc'>₹$sum_item</td></tr>";
-
-
-       }
-
-
+       $dynamicList1= $dynamicList0.$dynamicList1;
        $dynamicList1.="</tbody><tbody></tbody><tbody><tr><td colspan='5' align='right' style='padding:3px 9px'> Total</td><td align='right' style='padding:3px 9px'> <span>₹$sum</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> Shipping &amp; Handling</td><td align='right' style='padding:3px 9px'> <span>₹0</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> Discount </td><td align='right' style='padding:3px 9px'> <span>₹0</span></td></tr><tr><td colspan='5' align='right' style='padding:3px 9px'> <strong>Grand Total</strong></td><td align='right' style='padding:3px 9px'> <strong><span>₹$sum</span></strong></td></tr></tbody></table>";
+
+
+
+
 
 
        $message="
@@ -165,7 +169,7 @@ if($_POST["additem"])
              <td align='center' valign='top' style='padding:20px 0 20px 0'><table bgcolor='#FFFFFF' cellspacing='0' cellpadding='10' border='0' width='650' style='border:1px solid #e0e0e0'>
 
                  <tbody><tr>
-                   <td valign='top'><a href='http://www.dcgpac.com/' target='_blank'><img src='https://ci5.googleusercontent.com/proxy/BRqf8Dj5jQFoGu_7GVG8auD1GEKdYaLRhXsjiCJApMzNmRHCjz8Xqe5eWTb8nLbR-5tSJGXdIKe8_1QGtpQqRTNzCp7yLnS3xAPXmpPBxJ0=s0-d-e1-ft#http://www.dcgpac.com/media/email/logo/websites/1/logo.png' alt='DCGPAC' style='margin-bottom:10px' border='0' class='CToWUd'></a></td>
+                   <td valign='top'><a href='http://www.captaindhobi.com/' target='_blank'><img src='http://www.captaindhobi.com/admindsetgo/images.captaindhobi.jpg' alt='DCGPAC' style='margin-bottom:10px' border='0' class='CToWUd'></a></td>
                  </tr>
 
                  <tr>
@@ -174,7 +178,7 @@ if($_POST["additem"])
                        to help you track your order. For any query kindly contact us on support@captaindhobi.com or call us on +9958563058</p></td>
                  </tr>
                  <tr>
-                   <td><h2 style='font-size:18px;font-weight:normal;margin:0'>Your Order $orderid <small> (placed on $oreg_date </small></h2></td>
+                   <td><h2 style='font-size:18px;font-weight:normal;margin:0'>Your Order $orderid <small> (placed on $oreg_date) </small></h2></td>
                  </tr>
 
                  <tr>
@@ -256,19 +260,19 @@ sendmail($cemailid,$message);
          <?php
            $sql2 = "SELECT * FROM dsetgo_products";
            $result = $conn->query($sql2);
-          $dynamicList1='<fieldset><legend>Available Items:';
+          $dynamicList5='<fieldset><legend>Available Items:';
 $i=1;
            if ($result->num_rows > 0) {
                while($row = $result->fetch_assoc()) {
               $itemcategory= $row["itemcategory"];
-    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /><input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
+    $dynamicList .='</legend><input type="text" readonly name="itemname'.$i.'" value="'.$row["itemname"].'" /><input type="text" readonly name="itemcategory'.$i.'" value="'.$row["itemcategory"].'" /><input type="text" readonly name="itemcost'.$i.'" value="'.$row["itemcost"].'" /><input type="text"  name="qty'.$i.'" placeholder="qty" value=""><br />';
     $i=$i+1;
            }
            } else {
                echo "Invalid data";
            }
            $i=$i-1;
-           $dynamicList=$dynamicList1.$dynamicList.'</fieldset></br>'.'<input type="text" style="display:none;" readonly name="total" value="'.$i.'" />'
+           $dynamicList=$dynamicList5.$dynamicList.'</fieldset></br>'.'<input type="text" style="display:none;" readonly name="total" value="'.$i.'" />'
          ?>
 
          <?php
