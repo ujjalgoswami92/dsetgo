@@ -2,53 +2,115 @@
 require 'connect.inc.php';
 require 'core.inc.php';
 
-if(isset($_GET['phonenumber']) && intval($_GET['phonenumber'])) {
+//if(isset($_GET['phonenumber']) && intval($_GET['phonenumber'])) {
 
 	/* soak in the passed variable or set our own */
-	$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
-	$PhoneNumber = intval($_GET['phonenumber']); //no default
-
-
-
-  $sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
+	//$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
+	$PhoneNumber = $_GET['phonenumber']; //no default
+$Webservicename=$_GET['name'];
+$usernamedelivery=$_GET['user'];
+$passworddelivery=$_GET['pass'];
+$ostatus=$_GET['status'];
+function fetchCustomerData($PhoneNumber) {
+	require 'connect.inc.php';
+	require 'core.inc.php';
+	$sql2 = "SELECT * FROM dsetgo_customer where cphonenumber='$PhoneNumber'";
   $result = $conn->query($sql2);
+	$posts = array();
 
   if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {
-        $posts = array();
-             $posts[] = array('customerdetail'=>$row);
-                    }
-                    } else {
-                      $customerfound="false";
-                      $posts[] = array('customerdetail'=>"0");
-                    }
-
-	/* output in necessary format */
-	if($format == 'json') {
-		header('Content-type: application/json');
-		echo json_encode(array('customerdetails'=>$posts));
-	}
-	else {
-		header('Content-type: text/xml');
-		echo '<customerdetails>';
-		foreach($posts as $index => $post) {
-			if(is_array($post)) {
-				foreach($post as $key => $value) {
-					echo '<',$key,'>';
-					if(is_array($value)) {
-						foreach($value as $tag => $val) {
-							echo '<',$tag,'>',htmlentities($val),'</',$tag,'>';
-						}
+        		// $posts[] = array('customerdetail'=>$row);
+					$posts=array('cid'=>$row["cid"],'cfirstname'=>$row["cfirstname"],'clastname'=>$row["clastname"],'caddress'=>$row["caddress"],'cemailid'=>$row["cemailid"],'creferredby'=>$row["creferredby"],'creferralcode'=>$row["creferralcode"],'cstatus'=>$row["cstatus"],'reg_date'=>$row["reg_date"]);
 					}
-					echo '</',$key,'>';
-				}
-			}
-		}
-		echo '</customerdetails>';
-	}
+                    } else {
+                      $posts = array('customerdetail'=>"0");
+                    }
 
-	/* disconnect from the db */
-//	@mysql_close($link);
-$conn->close();
+		header('Content-type: application/json');
+		echo json_encode($posts);
 }
+function deliverylogin($usernamedelivery,$passworddelivery)
+{
+ require 'connect.inc.php';
+ 	require 'core.inc.php';
+ 	$passworddelivery=md5($passworddelivery);
+	$sql2 = "SELECT * FROM dsetgo_delivery where username='$usernamedelivery' AND password='$passworddelivery'";
+  $result = $conn->query($sql2);
+	$posts = array();
+
+  if ($result->num_rows > 0) {
+      while($row = $result->fetch_assoc()) {
+        				$posts = array('status'=>"approved");
+                    							    }
+                    } else {
+                      $posts = array('status'=>"declined");
+                    }
+
+		header('Content-type: application/json');
+		echo json_encode($posts);
+
+}
+function orders($ostatus)
+{
+ require 'connect.inc.php';
+ 	require 'core.inc.php';
+/*	$sql2="SELECT * FROM dsetgo_customer where cphonenumber='9958563058'";
+	//$sql2 = "select do.orderid, dc.cphonenumber from dsetgo_orders do, dsetgo_customer dc where do.cid=dc.cid and status='$ostatus'";
+  $result = $conn->query($sql2);
+	$posts = array();
+  if ($result->num_rows > 0) {
+      while($row = mysqli_fetch_row($result)) {
+      //$posts[]='orderid'=>$row["cid"];
+							//$posts[]=$row;
+							//$posts=array('cid'=>$row["orderid"]);
+//$test=$row["orderid"];
+$posts=array('cid'=>$row["cid"],'cfirstname'=>$row["cfirstname"]);
+		 }
+                    } else {
+                      $posts = array('status'=>"declined");
+                    }
+                    				//$posts=array('cid'=>"1");
+
+		header('Content-type: application/json');
+		echo json_encode($posts);
+		//echo $posts;*/
+
+			$sql2 = "select do.orderid, dc.cphonenumber from dsetgo_orders do, dsetgo_customer dc where do.cid=dc.cid and status='$ostatus'";
+  $result = $conn->query($sql2);
+	$posts = array();
+$i=1;
+  if ($result->num_rows > 0) {
+      while($row = $result->fetch_assoc()) {
+
+        				$posts[$i]=array($i=>(array($row["orderid"],$row["cphonenumber"])));
+					$i++;
+					}
+                    } else {
+                      $posts = array('customerdetail'=>"0");
+                    }
+
+		header('Content-type: application/json');
+		echo json_encode($posts);
+}
+//echo $Webservicename;
+switch($Webservicename)
+{
+case 'customerDetails':
+fetchCustomerData($PhoneNumber);
+break;
+case 'deliverylogin':
+deliverylogin($usernamedelivery,$passworddelivery);
+break;
+case 'orders':
+orders($ostatus);
+break;
+default:
+break;
+}
+
+$conn->close();
+
+//}
+
 ?>
