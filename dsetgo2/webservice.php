@@ -12,6 +12,7 @@ $usernamedelivery=$_POST['user'];
 $passworddelivery=$_POST['pass'];
 $ostatus=$_POST['status'];
 $item=$_POST['item'];
+$itemtype=$_POST['itemtype'];
 function fetchCustomerData($PhoneNumber) {
 	require 'connect.inc.php';
 	require 'core.inc.php';
@@ -36,30 +37,38 @@ function deliverylogin($usernamedelivery,$passworddelivery)
  require 'connect.inc.php';
  	require 'core.inc.php';
  	$passworddelivery=md5($passworddelivery);
-	$sql2 = "SELECT * FROM dsetgo_delivery where username='$usernamedelivery' AND password='$passworddelivery'";
+ 	$sql2 = "SELECT * FROM dsetgo_delivery where username='$usernamedelivery' AND password='$passworddelivery'";
   $result = $conn->query($sql2);
 	$posts = array();
 
   if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {
-        				$posts = array('status'=>"approved");
+        				$posts = array("approved");
                     							    }
                     } else {
-                      $posts = array('status'=>"declined");
+                      $posts = array("declined");
                     }
 
 		header('Content-type: application/json');
 		echo json_encode($posts);
 
 }
-function fetchCustomerDetail($item)
+function fetchCustomerDetail($item,$itemtype)
 {
  require 'connect.inc.php';
  	require 'core.inc.php';
 
+switch($itemtype)
+{
+case 'phonenumber':
+$itemtype='cphonenumber';
+break;
+case 'address':
+$itemtype='caddress';
+break;
+}
 
-
- 	 $sql2 = "select dc.cphonenumber from dsetgo_customer dc, dsetgo_orders do where dc.cid=do.cid and do.orderid='$item'";
+ 	 $sql2 = "select * from dsetgo_customer dc, dsetgo_orders do where dc.cid=do.cid and do.orderid='$item'";
 
   $result = $conn->query($sql2);
 	$posts = array();
@@ -70,7 +79,7 @@ $posts = array();
 $i=1;
   if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {
-        				$posts[]=$row["cphonenumber"];
+        				$posts[]=$row[$itemtype];
 					$i++;
 					}
                     } else {
@@ -117,7 +126,7 @@ case 'orders':
 orders($ostatus);
 break;
 case 'customerDetail':
-fetchCustomerDetail($item);
+fetchCustomerDetail($item,$itemtype);
 break;
 default:
 break;
