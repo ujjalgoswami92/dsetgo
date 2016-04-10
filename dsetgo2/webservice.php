@@ -78,6 +78,10 @@ break;
 case 'address':
 $itemtype='caddress';
 break;
+case 'processing':
+
+$itemtype='cphonenumber';
+break;
 }
 
  	 $sql2 = "select * from dsetgo_customer dc, dsetgo_orders do where dc.cid=do.cid and do.orderid='$item'";
@@ -107,7 +111,7 @@ function orders($ostatus)
  require 'connect.inc.php';
  	require 'core.inc.php';
 
-			$sql2 = "select * from dsetgo_orders where orderstatus='$ostatus'";
+			$sql2 = "select * from dsetgo_orders where orderstatus='$ostatus' and regpickdate= CURDATE()";
   $result = $conn->query($sql2);
 	$posts = array();
 $i=1;
@@ -232,9 +236,8 @@ require 'connect.inc.php';
  	$productPrice=getPrice($productKey);
  	$productID=getID($productKey);
 
-
+ //echo "phone:".$cphonenumber;
 $customerdetails=getCustomerDatafromPhoneNumber($cphonenumber);
-
 $customerdetailsArray=explode(',', $customerdetails);
 
 foreach ($customerdetailsArray as $v1) {
@@ -252,8 +255,12 @@ $customerid=$customerdetailsArray[4];
  	$productQtyArray = explode(',', $productQty);
  	$productPriceArray = explode(',', $productPrice);
  	$productIDArray = explode(',', $productID);
+ //	echo $cphonenumber;
 
- 	 $orderid = substr( $customerid.mt_rand().microtime(), 0, 7);
+ $orderid=getOrderID($cphonenumber);
+// echo $orderid;
+
+ //	 $orderid = substr( $customerid.mt_rand().microtime(), 0, 7);
     date_default_timezone_set("Asia/Kolkata");
  $t=time();
 
@@ -289,13 +296,16 @@ foreach ($productKeyArray as $v) {
  	//echo $productKeyArray." ".$productQtyArray." ".$productPriceArray;
  	$grandTotal=$total-$discount-$shipping;
 
-      $sql = "INSERT INTO dsetgo_orders (orderid,oamount,cid,orderstatus,reg_date)
-      VALUES ('$orderid','$grandTotal', '$customerid','pending','$oreg_date')";
-      if ($conn->query($sql) === TRUE) {
-          echo "order table updated successful";
-      } else {
-          echo "Error inserting data in order table: " . $conn->error;
-      }
+
+ $sql1 = "update dsetgo_orders set oamount='$grandTotal' where orderid='$orderid'";
+  if ($conn->query($sql1) === TRUE) {
+  echo "";
+  }
+  else
+  {
+  echo "could not update status";
+  }
+
 
 
 $dynamicList1= $dynamicList0.$dynamicList1;
@@ -389,11 +399,43 @@ $dynamicList1= $dynamicList0.$dynamicList1;
  ";
 
 //echo $message;
-//echo $cid;
+updateStatus($orderid,'processing');
+
 sendmail($cemailid,$message);
+//updateStatus($orderid,'processing');
 }
+function getOrderID($cphonenumber)
+{
+require 'connect.inc.php';
+ 	require 'core.inc.php';
 
+ 	$sql2="select do.orderid from dsetgo_orders do, dsetgo_customer dc where do.orderstatus='pending' and  dc.cphonenumber='$cphonenumber' and do.cid=dc.cid limit 1";
+ 	//$sql2 = "select * from dsetgo_orders do dsetgo_customer dc where do.orderstatus='pending' and do.cid";
 
+  $result = $conn->query($sql2);
+	$posts = array();
+  if ($result->num_rows > 0) {
+      while($row = $result->fetch_assoc()) {
+        				$orderid.=$row['orderid'].',';
+					}
+                    }
+                    return $orderid;
+
+}
+function updateStatus($orderid,$status)
+{
+require 'connect.inc.php';
+ 	require 'core.inc.php';
+//echo $orderid.$status;
+$sql2 = "update dsetgo_orders set orderstatus='$status' where orderid='$orderid'";
+  if ($conn->query($sql2) === TRUE) {
+  echo "";
+  }
+  else
+  {
+  echo "could not update status";
+  }
+}
 function getID($productKey)
 {
 require 'connect.inc.php';
