@@ -76,7 +76,7 @@ case 'phonenumber':
 $itemtype='cphonenumber';
 break;
 case 'address':
-$itemtype='caddress';
+$itemtype='ocaddress';
 break;
 case 'processing':
 
@@ -559,9 +559,6 @@ break;
 }
 
 $conn->close();
-
-
-
 
 
 ?>
