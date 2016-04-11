@@ -1,15 +1,27 @@
 <?php
 require 'connect.inc.php';
 // sql to create table
+
+//echo md5("qawsed");
+
+
+$sql="DROP TABLE dsetgo_customer, dsetgo_orders, dsetgo_products,dsetgo_products_orders";
+if ($conn->query($sql) === TRUE) {
+    echo "Table customer, orders, products, products_orders dropped successfully";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
 $sql = "CREATE TABLE dsetgo_customer (
-cid INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+cid BIGINT(15) UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
 cfirstname VARCHAR(30) NOT NULL,
 clastname VARCHAR(30),
-cstreet VARCHAR(15) NOT NULL,
-
-caddress VARCHAR(100) NOT NULL ,
+ccity VARCHAR(20) ,
+carea VARCHAR(20) ,
+cFlatno_Society VARCHAR(20),
+caddress VARCHAR(100) NOT NULL,
 cphonenumber VARCHAR(50) UNIQUE NOT NULL,
-cemailid VARCHAR(50) NOT NULL UNIQUE,
+cemailid VARCHAR(50) NOT NULL,
 creferralcode VARCHAR(50) NOT NULL,
 creferredby VARCHAR(50),
 cstatus VARCHAR(50) NOT NULL,
@@ -46,13 +58,21 @@ if ($conn->query($sql) === TRUE) {
 // sql to create table
 $sql = "CREATE TABLE dsetgo_orders (
 orderid BIGINT(15) UNSIGNED PRIMARY KEY,
-oamount DECIMAL(30) NOT NULL,
-cid INT(6) UNSIGNED,
+oamount DECIMAL(30) ,
+cid BIGINT(15) UNSIGNED,
+ocfirstname VARCHAR(30),
+oclastname VARCHAR(30),
+ocemailid VARCHAR(50) ,
+ocaddress VARCHAR(50),
 reg_date TIMESTAMP,
 orderstatus VARCHAR(50) NOT NULL,
+regpickdate DATE,
+regdropdate DATE,
+regpicktime VARCHAR(20),
+regdroptime VARCHAR(20),
 notes VARCHAR(50),
 FOREIGN KEY (cid) REFERENCES dsetgo_customer(cid),
-CHECK (orderstatus in ('pending', 'processed','out for delivery','delivered'))
+CHECK (orderstatus in ('pending','pending with no products','processed','out for delivery','delivered'))
 
 )";
 
@@ -65,7 +85,7 @@ if ($conn->query($sql) === TRUE) {
 
 // sql to create table
 $sql = "CREATE TABLE dsetgo_products_orders (
-itemid INT(9) UNSIGNED,
+itemid INT(6) UNSIGNED,
 orderid BIGINT(15) UNSIGNED,
 quantity INT(6) UNSIGNED,
 orderprice VARCHAR(10),
@@ -88,7 +108,11 @@ firstname VARCHAR(30) NOT NULL,
 lastname VARCHAR(30),
 username VARCHAR(50),
 password VARCHAR(50),
+phonenumber VARCHAR(50) UNIQUE NOT NULL,
+emailid VARCHAR(50) NOT NULL UNIQUE,
+address VARCHAR(100) NOT NULL ,
 type VARCHAR(6) NOT NULL,
+status VARCHAR(50) NOT NULL,
 reg_date TIMESTAMP
 )";
 
@@ -103,7 +127,7 @@ if ($conn->query($sql) === TRUE) {
 
 $sql = "CREATE TABLE dsetgo_wallet (
   itemid INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  cid INT(6) NOT NULL,
+  cid BIGINT(15) NOT NULL,
   wallet_amount VARCHAR(10) NOT NULL
 
 )";
