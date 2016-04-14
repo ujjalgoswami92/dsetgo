@@ -1,0 +1,23 @@
+[03-Apr-2016 18:49:00 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:49:37 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:54:29 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:54:38 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:56:30 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:56:53 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 18:58:03 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 19:00:17 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 19:03:48 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 19:04:32 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 130
+[03-Apr-2016 19:05:23 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 130
+[03-Apr-2016 19:05:25 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 130
+[03-Apr-2016 19:05:27 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 130
+[03-Apr-2016 19:09:23 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 19:09:25 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[03-Apr-2016 19:10:38 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 131
+[06-Apr-2016 19:22:50 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 373
+[06-Apr-2016 19:23:06 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 373
+[06-Apr-2016 19:23:25 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 373
+[06-Apr-2016 19:24:23 UTC] PHP Fatal error:  Call to a member function query() on a non-object in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 373
+[06-Apr-2016 19:53:01 UTC] PHP Fatal error:  Call to undefined function getDetailsfromphonenumber() in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 236
+[06-Apr-2016 19:53:40 UTC] PHP Fatal error:  Call to undefined function getDetailsfromphonenumber() in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 236
+[06-Apr-2016 20:37:50 UTC] PHP Fatal error:  Cannot use object of type stdClass as array in /home/ujjalgoswami/public_html/admindsetgo/webservice.php on line 414
